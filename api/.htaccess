@@ -1,0 +1,24 @@
+# Security: Prevent directory listing
+Options -Indexes
+
+# Allow access to PHP files
+<Files "*.php">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Protect sensitive files
+<FilesMatch "^(yalda_log\.txt|yalda_participants\.json)$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+# Enable CORS for API requests
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "POST, GET, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type"
+</IfModule>
+
+# UTF-8 encoding
+AddDefaultCharset UTF-8

@@ -1,0 +1,209 @@
+[2025-12-22 01:40:44] Validation request for User ID: 515151151
+--------------------------------------------------------------------------------
+[2025-12-22 01:50:41] Validation request for User ID: 24422422
+--------------------------------------------------------------------------------
+[2025-12-22 01:50:41] Bot API Call: GET https://bot.onvipone.ir/api/users
+Array
+(
+    [request_data] => Array
+        (
+            [actions] => user
+            [chat_id] => 24422422
+        )
+
+    [request_json] => {"actions":"user","chat_id":"24422422"}
+    [response] => {"status":true,"msg":"Successful","obj":{"users":[],"pagination":{"total_users":1,"total_pages":1,"current_page":1,"per_page":10}}}
+    [http_code] => 200
+    [error] => 
+)
+
+--------------------------------------------------------------------------------
+[2025-12-22 01:57:59] Validation request for User ID: 5448100086
+--------------------------------------------------------------------------------
+[2025-12-22 01:58:00] Bot API Call: GET https://bot.onvipone.ir/api/users
+Array
+(
+    [request_data] => Array
+        (
+            [actions] => user
+            [chat_id] => 5448100086
+        )
+
+    [request_json] => {"actions":"user","chat_id":"5448100086"}
+    [response] => {"status":true,"msg":"Successful","obj":{"users":[{"user_id":"5448100086","username":"IQmahdi","limit_usertest":-72,"roll_Status":1,"number":"989231271531","Balance":1959000,"User_Status":"Active","agent":"n","affiliatescount":"5","affiliates":"0","cardpayment":"1","time_join":"1706884157","verify":"1","pricediscount":"25","last_message_time":"1766356065","score":0,"joinchannel":"0","status_cron":"1","expire":null,"maxbuyagent":"0","limitchangeloc":"0","description_blocking":null,"count_invoice":16,"sum_invoice":3478500,"count_payment":134,"sum_payment":39337805,"count_service":140,"sum_service":8738500,"agent_bot":false,"panels":[]}],"panel":[{"code_panel":"39ac","name_panel":"🇩🇪 آلمان | حجمی"}],"product":[{"code_product":"d800","name_product":"🥈20گیگ_⏰30روزه"},{"code_product":"060a","name_product":"🥈30گیگ_⏰30روزه"},{"code_product":"35ee","name_product":"🥈50گیگ_⏰30روزه"},{"code_product":"c9b0","name_product":"🥈100گیگ_⏰30روزه"},{"code_product":"aef6","name_product":"🥈20گیگ⏰30روزه"},{"code_product":"447c","name_product":"🥈30گیگ⏰30روزه"},{"code_product":"dd28","name_product":"🥈50گیگ⏰30روزه"},{"code_product":"485b","name_product":"🥈100گیگ⏰30روزه"},{"code_product":"94b4","name_product":"🥇50گیگ_⏰75روزه"},{"code_product":"253f","name_product":"🥇100گیگ_⏰75روزه"},{"code_product":"124b","name_product":"🥇200گیگ_⏰75روزه"},{"code_product":"6d80","name_product":"🥇50گیگ⏰75روزه"},{"code_product":"a638","name_product":"🥇100گیگ⏰75روزه"},{"code_product":"3064","name_product":"🥇200گیگ⏰75روزه"},{"code_product":"6c99","name_product":"🥈20گیگ_⏰نامحدود روز"},{"code_product":"5d0e","name_product":"🥈30گیگ_⏰نامحدود روز"},{"code_product":"14cb","name_product":"🥈50گیگ_⏰نامحدود روز"},{"code_product":"27b5","name_product":"🥈100گیگ_⏰نامحدود روز"},{"code_product":"9601","name_product":"🥈200گیگ_⏰نامحدود روز"},{"code_product":"118f","name_product":"🥈500گیگ_⏰نامحدود روز"},{"code_product":"7f22","name_product":"🥈1000گیگ_⏰نامحدود روز"},{"code_product":"aef61","name_product":"🥈20گیگ 👤5کاربره⏰30روزه"},{"code_product":"447c2","name_product":"🥈30گیگ 👤5کاربره⏰30روزه"},{"code_product":"dd284","name_product":"🥈50گیگ 👤5کاربره⏰30روزه"},{"code_product":"485b6","name_product":"🥈100گیگ 👤5کاربره⏰30روزه"},{"code_product":"6d806","name_product":"🥇50گیگ 👤5کاربره⏰75روزه"},{"code_product":"a6387","name_product":"🥇100گیگ 👤5کاربره⏰75روزه"},{"code_product":"30645","name_product":"🥇200گیگ 👤5کاربره⏰75روزه"},{"code_product":"bd59","name_product":"🥈20گیگ_⏰نامحدود روز\t"},{"code_product":"3dc6","name_product":"🥈30گیگ_⏰نامحدود روز\t"},{"code_product":"6162","name_product":"🥈50گیگ_⏰نامحدود روز\t"},{"code_product":"e9a6","name_product":"🥈100گیگ_⏰نامحدود روز\t"},{"code_product":"850e","name_product":"🥈200گیگ_⏰نامحدود روز\t"},{"code_product":"7ce4","name_product":"🥈500گیگ_⏰نامحدود روز\t"},{"code_product":"ae25","name_product":"🥈1000گیگ_⏰نامحدود روز\t"},{"code_product":"bf3e","name_product":"🪙نامحدودحجم⏳30روزه👤1کاربره"},{"code_product":"3872","name_product":"🪙نامحدودحجم⏳30روزه👤2کاربره"},{"code_product":"a0d2","name_product":"🪙نامحدودحجم⏳30روزه👤3کاربره"},{"code_product":"aa45","name_product":"🪙نامحدودحجم⏳30روزه👤4کاربره"},{"code_product":"7ca2","name_product":"🪙نامحدودحجم⏳30روزه👤5کاربره"},{"code_product":"1bfd","name_product":"💎نامحدودحجم⏳30روزه👤1کاربره"},{"code_product":"ebb9","name_product":"💎نامحدودحجم⏳30روزه👤2کاربره"},{"code_product":"805b","name_product":"💎نامحدودحجم⏳30روزه👤3کاربره"},{"code_product":"c93b","name_product":"💎نامحدودحجم⏳30روزه👤4کاربره\t"},{"code_product":"6f1f","name_product":"💎نامحدودحجم⏳30روزه👤5کاربره\t"}],"pagination":{"total_users":1,"total_pages":1,"current_page":1,"per_page":10}}}
+    [http_code] => 200
+    [error] => 
+)
+
+--------------------------------------------------------------------------------
+[2025-12-22 01:58:00] User found
+Array
+(
+    [user_id] => 5448100086
+    [username] => IQmahdi
+    [limit_usertest] => -72
+    [roll_Status] => 1
+    [number] => 989231271531
+    [Balance] => 1959000
+    [User_Status] => Active
+    [agent] => n
+    [affiliatescount] => 5
+    [affiliates] => 0
+    [cardpayment] => 1
+    [time_join] => 1706884157
+    [verify] => 1
+    [pricediscount] => 25
+    [last_message_time] => 1766356065
+    [score] => 0
+    [joinchannel] => 0
+    [status_cron] => 1
+    [expire] => 
+    [maxbuyagent] => 0
+    [limitchangeloc] => 0
+    [description_blocking] => 
+    [count_invoice] => 16
+    [sum_invoice] => 3478500
+    [count_payment] => 134
+    [sum_payment] => 39337805
+    [count_service] => 140
+    [sum_service] => 8738500
+    [agent_bot] => 
+    [panels] => Array
+        (
+        )
+
+)
+
+--------------------------------------------------------------------------------
+[2025-12-22 02:00:46] Validation request for User ID: 5448100086
+--------------------------------------------------------------------------------
+[2025-12-22 02:00:46] Bot API Call: GET https://bot.onvipone.ir/api/users
+Array
+(
+    [request_data] => Array
+        (
+            [actions] => user
+            [chat_id] => 5448100086
+        )
+
+    [request_json] => {"actions":"user","chat_id":"5448100086"}
+    [response] => {"status":true,"msg":"Successful","obj":{"users":[{"user_id":"5448100086","username":"IQmahdi","limit_usertest":-72,"roll_Status":1,"number":"989231271531","Balance":1959000,"User_Status":"Active","agent":"n","affiliatescount":"5","affiliates":"0","cardpayment":"1","time_join":"1706884157","verify":"1","pricediscount":"25","last_message_time":"1766356065","score":0,"joinchannel":"0","status_cron":"1","expire":null,"maxbuyagent":"0","limitchangeloc":"0","description_blocking":null,"count_invoice":16,"sum_invoice":3478500,"count_payment":134,"sum_payment":39337805,"count_service":140,"sum_service":8738500,"agent_bot":false,"panels":[]}],"panel":[{"code_panel":"39ac","name_panel":"🇩🇪 آلمان | حجمی"}],"product":[{"code_product":"d800","name_product":"🥈20گیگ_⏰30روزه"},{"code_product":"060a","name_product":"🥈30گیگ_⏰30روزه"},{"code_product":"35ee","name_product":"🥈50گیگ_⏰30روزه"},{"code_product":"c9b0","name_product":"🥈100گیگ_⏰30روزه"},{"code_product":"aef6","name_product":"🥈20گیگ⏰30روزه"},{"code_product":"447c","name_product":"🥈30گیگ⏰30روزه"},{"code_product":"dd28","name_product":"🥈50گیگ⏰30روزه"},{"code_product":"485b","name_product":"🥈100گیگ⏰30روزه"},{"code_product":"94b4","name_product":"🥇50گیگ_⏰75روزه"},{"code_product":"253f","name_product":"🥇100گیگ_⏰75روزه"},{"code_product":"124b","name_product":"🥇200گیگ_⏰75روزه"},{"code_product":"6d80","name_product":"🥇50گیگ⏰75روزه"},{"code_product":"a638","name_product":"🥇100گیگ⏰75روزه"},{"code_product":"3064","name_product":"🥇200گیگ⏰75روزه"},{"code_product":"6c99","name_product":"🥈20گیگ_⏰نامحدود روز"},{"code_product":"5d0e","name_product":"🥈30گیگ_⏰نامحدود روز"},{"code_product":"14cb","name_product":"🥈50گیگ_⏰نامحدود روز"},{"code_product":"27b5","name_product":"🥈100گیگ_⏰نامحدود روز"},{"code_product":"9601","name_product":"🥈200گیگ_⏰نامحدود روز"},{"code_product":"118f","name_product":"🥈500گیگ_⏰نامحدود روز"},{"code_product":"7f22","name_product":"🥈1000گیگ_⏰نامحدود روز"},{"code_product":"aef61","name_product":"🥈20گیگ 👤5کاربره⏰30روزه"},{"code_product":"447c2","name_product":"🥈30گیگ 👤5کاربره⏰30روزه"},{"code_product":"dd284","name_product":"🥈50گیگ 👤5کاربره⏰30روزه"},{"code_product":"485b6","name_product":"🥈100گیگ 👤5کاربره⏰30روزه"},{"code_product":"6d806","name_product":"🥇50گیگ 👤5کاربره⏰75روزه"},{"code_product":"a6387","name_product":"🥇100گیگ 👤5کاربره⏰75روزه"},{"code_product":"30645","name_product":"🥇200گیگ 👤5کاربره⏰75روزه"},{"code_product":"bd59","name_product":"🥈20گیگ_⏰نامحدود روز\t"},{"code_product":"3dc6","name_product":"🥈30گیگ_⏰نامحدود روز\t"},{"code_product":"6162","name_product":"🥈50گیگ_⏰نامحدود روز\t"},{"code_product":"e9a6","name_product":"🥈100گیگ_⏰نامحدود روز\t"},{"code_product":"850e","name_product":"🥈200گیگ_⏰نامحدود روز\t"},{"code_product":"7ce4","name_product":"🥈500گیگ_⏰نامحدود روز\t"},{"code_product":"ae25","name_product":"🥈1000گیگ_⏰نامحدود روز\t"},{"code_product":"bf3e","name_product":"🪙نامحدودحجم⏳30روزه👤1کاربره"},{"code_product":"3872","name_product":"🪙نامحدودحجم⏳30روزه👤2کاربره"},{"code_product":"a0d2","name_product":"🪙نامحدودحجم⏳30روزه👤3کاربره"},{"code_product":"aa45","name_product":"🪙نامحدودحجم⏳30روزه👤4کاربره"},{"code_product":"7ca2","name_product":"🪙نامحدودحجم⏳30روزه👤5کاربره"},{"code_product":"1bfd","name_product":"💎نامحدودحجم⏳30روزه👤1کاربره"},{"code_product":"ebb9","name_product":"💎نامحدودحجم⏳30روزه👤2کاربره"},{"code_product":"805b","name_product":"💎نامحدودحجم⏳30روزه👤3کاربره"},{"code_product":"c93b","name_product":"💎نامحدودحجم⏳30روزه👤4کاربره\t"},{"code_product":"6f1f","name_product":"💎نامحدودحجم⏳30روزه👤5کاربره\t"}],"pagination":{"total_users":1,"total_pages":1,"current_page":1,"per_page":10}}}
+    [http_code] => 200
+    [error] => 
+)
+
+--------------------------------------------------------------------------------
+[2025-12-22 02:00:46] User found
+Array
+(
+    [user_id] => 5448100086
+    [username] => IQmahdi
+    [limit_usertest] => -72
+    [roll_Status] => 1
+    [number] => 989231271531
+    [Balance] => 1959000
+    [User_Status] => Active
+    [agent] => n
+    [affiliatescount] => 5
+    [affiliates] => 0
+    [cardpayment] => 1
+    [time_join] => 1706884157
+    [verify] => 1
+    [pricediscount] => 25
+    [last_message_time] => 1766356065
+    [score] => 0
+    [joinchannel] => 0
+    [status_cron] => 1
+    [expire] => 
+    [maxbuyagent] => 0
+    [limitchangeloc] => 0
+    [description_blocking] => 
+    [count_invoice] => 16
+    [sum_invoice] => 3478500
+    [count_payment] => 134
+    [sum_payment] => 39337805
+    [count_service] => 140
+    [sum_service] => 8738500
+    [agent_bot] => 
+    [panels] => Array
+        (
+        )
+
+)
+
+--------------------------------------------------------------------------------
+[2025-12-22 02:01:12] Validation request for User ID: 5448100086
+--------------------------------------------------------------------------------
+[2025-12-22 02:01:13] Bot API Call: GET https://bot.onvipone.ir/api/users
+Array
+(
+    [request_data] => Array
+        (
+            [actions] => user
+            [chat_id] => 5448100086
+        )
+
+    [request_json] => {"actions":"user","chat_id":"5448100086"}
+    [response] => {"status":true,"msg":"Successful","obj":{"users":[{"user_id":"5448100086","username":"IQmahdi","limit_usertest":-72,"roll_Status":1,"number":"989231271531","Balance":1959000,"User_Status":"Active","agent":"n","affiliatescount":"5","affiliates":"0","cardpayment":"1","time_join":"1706884157","verify":"1","pricediscount":"25","last_message_time":"1766356065","score":0,"joinchannel":"0","status_cron":"1","expire":null,"maxbuyagent":"0","limitchangeloc":"0","description_blocking":null,"count_invoice":16,"sum_invoice":3478500,"count_payment":134,"sum_payment":39337805,"count_service":140,"sum_service":8738500,"agent_bot":false,"panels":[]}],"panel":[{"code_panel":"39ac","name_panel":"🇩🇪 آلمان | حجمی"}],"product":[{"code_product":"d800","name_product":"🥈20گیگ_⏰30روزه"},{"code_product":"060a","name_product":"🥈30گیگ_⏰30روزه"},{"code_product":"35ee","name_product":"🥈50گیگ_⏰30روزه"},{"code_product":"c9b0","name_product":"🥈100گیگ_⏰30روزه"},{"code_product":"aef6","name_product":"🥈20گیگ⏰30روزه"},{"code_product":"447c","name_product":"🥈30گیگ⏰30روزه"},{"code_product":"dd28","name_product":"🥈50گیگ⏰30روزه"},{"code_product":"485b","name_product":"🥈100گیگ⏰30روزه"},{"code_product":"94b4","name_product":"🥇50گیگ_⏰75روزه"},{"code_product":"253f","name_product":"🥇100گیگ_⏰75روزه"},{"code_product":"124b","name_product":"🥇200گیگ_⏰75روزه"},{"code_product":"6d80","name_product":"🥇50گیگ⏰75روزه"},{"code_product":"a638","name_product":"🥇100گیگ⏰75روزه"},{"code_product":"3064","name_product":"🥇200گیگ⏰75روزه"},{"code_product":"6c99","name_product":"🥈20گیگ_⏰نامحدود روز"},{"code_product":"5d0e","name_product":"🥈30گیگ_⏰نامحدود روز"},{"code_product":"14cb","name_product":"🥈50گیگ_⏰نامحدود روز"},{"code_product":"27b5","name_product":"🥈100گیگ_⏰نامحدود روز"},{"code_product":"9601","name_product":"🥈200گیگ_⏰نامحدود روز"},{"code_product":"118f","name_product":"🥈500گیگ_⏰نامحدود روز"},{"code_product":"7f22","name_product":"🥈1000گیگ_⏰نامحدود روز"},{"code_product":"aef61","name_product":"🥈20گیگ 👤5کاربره⏰30روزه"},{"code_product":"447c2","name_product":"🥈30گیگ 👤5کاربره⏰30روزه"},{"code_product":"dd284","name_product":"🥈50گیگ 👤5کاربره⏰30روزه"},{"code_product":"485b6","name_product":"🥈100گیگ 👤5کاربره⏰30روزه"},{"code_product":"6d806","name_product":"🥇50گیگ 👤5کاربره⏰75روزه"},{"code_product":"a6387","name_product":"🥇100گیگ 👤5کاربره⏰75روزه"},{"code_product":"30645","name_product":"🥇200گیگ 👤5کاربره⏰75روزه"},{"code_product":"bd59","name_product":"🥈20گیگ_⏰نامحدود روز\t"},{"code_product":"3dc6","name_product":"🥈30گیگ_⏰نامحدود روز\t"},{"code_product":"6162","name_product":"🥈50گیگ_⏰نامحدود روز\t"},{"code_product":"e9a6","name_product":"🥈100گیگ_⏰نامحدود روز\t"},{"code_product":"850e","name_product":"🥈200گیگ_⏰نامحدود روز\t"},{"code_product":"7ce4","name_product":"🥈500گیگ_⏰نامحدود روز\t"},{"code_product":"ae25","name_product":"🥈1000گیگ_⏰نامحدود روز\t"},{"code_product":"bf3e","name_product":"🪙نامحدودحجم⏳30روزه👤1کاربره"},{"code_product":"3872","name_product":"🪙نامحدودحجم⏳30روزه👤2کاربره"},{"code_product":"a0d2","name_product":"🪙نامحدودحجم⏳30روزه👤3کاربره"},{"code_product":"aa45","name_product":"🪙نامحدودحجم⏳30روزه👤4کاربره"},{"code_product":"7ca2","name_product":"🪙نامحدودحجم⏳30روزه👤5کاربره"},{"code_product":"1bfd","name_product":"💎نامحدودحجم⏳30روزه👤1کاربره"},{"code_product":"ebb9","name_product":"💎نامحدودحجم⏳30روزه👤2کاربره"},{"code_product":"805b","name_product":"💎نامحدودحجم⏳30روزه👤3کاربره"},{"code_product":"c93b","name_product":"💎نامحدودحجم⏳30روزه👤4کاربره\t"},{"code_product":"6f1f","name_product":"💎نامحدودحجم⏳30روزه👤5کاربره\t"}],"pagination":{"total_users":1,"total_pages":1,"current_page":1,"per_page":10}}}
+    [http_code] => 200
+    [error] => 
+)
+
+--------------------------------------------------------------------------------
+[2025-12-22 02:01:13] User found
+Array
+(
+    [user_id] => 5448100086
+    [username] => IQmahdi
+    [limit_usertest] => -72
+    [roll_Status] => 1
+    [number] => 989231271531
+    [Balance] => 1959000
+    [User_Status] => Active
+    [agent] => n
+    [affiliatescount] => 5
+    [affiliates] => 0
+    [cardpayment] => 1
+    [time_join] => 1706884157
+    [verify] => 1
+    [pricediscount] => 25
+    [last_message_time] => 1766356065
+    [score] => 0
+    [joinchannel] => 0
+    [status_cron] => 1
+    [expire] => 
+    [maxbuyagent] => 0
+    [limitchangeloc] => 0
+    [description_blocking] => 
+    [count_invoice] => 16
+    [sum_invoice] => 3478500
+    [count_payment] => 134
+    [sum_payment] => 39337805
+    [count_service] => 140
+    [sum_service] => 8738500
+    [agent_bot] => 
+    [panels] => Array
+        (
+        )
+
+)
+
+--------------------------------------------------------------------------------
+[2025-12-22 02:01:48] Validation request for User ID: 5151515
+--------------------------------------------------------------------------------
+[2025-12-22 02:01:49] Bot API Call: GET https://bot.onvipone.ir/api/users
+Array
+(
+    [request_data] => Array
+        (
+            [actions] => user
+            [chat_id] => 5151515
+        )
+
+    [request_json] => {"actions":"user","chat_id":"5151515"}
+    [response] => {"status":true,"msg":"Successful","obj":{"users":[],"pagination":{"total_users":1,"total_pages":1,"current_page":1,"per_page":10}}}
+    [http_code] => 200
+    [error] => 
+)
+
+--------------------------------------------------------------------------------
