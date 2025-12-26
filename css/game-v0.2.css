@@ -1,0 +1,338 @@
+/* version: 0.2 - Game CSS */
+
+/* ========== متغیرهای رنگی یلدا ========== */
+:root {
+    --yalda-red: #d32f2f;
+    --yalda-dark: #1a1a2e;
+    --yalda-light: #f8f9fa;
+    --yalda-gold: #ffd700;
+    --yalda-green: #4caf50;
+    --pomegranate: #c62828;
+    --watermelon: #e91e63;
+}
+
+/* ========== تنظیمات پایه ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Vazir', 'Tahoma', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: var(--yalda-light);
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* ========== صفحه‌ها ========== */
+.screen {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* ========== صفحه خوشامدگویی ========== */
+#welcomeScreen {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-container {
+    text-align: center;
+    z-index: 10;
+    position: relative;
+}
+
+.yalda-logo {
+    font-size: 100px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.main-title {
+    font-size: 48px;
+    color: white;
+    margin: 20px 0;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+    font-size: 18px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 40px;
+}
+
+.input-container {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.input-label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: white;
+}
+
+.user-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 15px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    direction: ltr;
+}
+
+.user-input:focus {
+    outline: 3px solid var(--yalda-gold);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--yalda-red), #e91e63);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+/* ========== مودال‌ها ========== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    color: var(--yalda-dark);
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.guide-content {
+    margin: 30px 0;
+}
+
+.guide-item {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    text-align: right;
+}
+
+.guide-icon {
+    font-size: 40px;
+    margin-left: 20px;
+}
+
+.guide-item p {
+    flex: 1;
+    font-size: 16px;
+}
+
+/* ========== صفحه بازی ========== */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+}
+
+.user-info, .score-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-id-value, .score-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--yalda-gold);
+}
+
+.game-area {
+    width: 100%;
+    height: calc(100vh - 80px);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ========== میوه‌ها ========== */
+.fruit {
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.2s;
+    user-select: none;
+}
+
+.fruit:hover {
+    transform: scale(1.1);
+}
+
+.fruit.explode {
+    animation: explode 0.6s forwards;
+}
+
+@keyframes explode {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.8; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+/* ========== ذرات (دانه‌ها) ========== */
+.particle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.particle {
+    position: absolute;
+    pointer-events: none;
+    animation: particleFly 1s ease-out forwards;
+}
+
+@keyframes particleFly {
+    to {
+        transform: translate(var(--x), var(--y)) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* ========== مودال هدیه ========== */
+.gift-modal-content {
+    max-width: 600px;
+}
+
+.gift-icon {
+    font-size: 80px;
+    animation: bounce 0.6s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.gift-title {
+    font-size: 28px;
+    color: var(--yalda-red);
+    margin: 20px 0;
+}
+
+.gift-code {
+    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    direction: ltr;
+}
+
+.gift-code:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(253,203,110,0.5);
+}
+
+.gift-hint {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* ========== لودینگ ========== */
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading.hidden {
+    display: none;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ========== ریسپانسیو ========== */
+@media (max-width: 768px) {
+    .main-title { font-size: 36px; }
+    .subtitle { font-size: 16px; }
+    .input-container { padding: 30px 20px; }
+    .modal-content { padding: 30px 20px; }
+    .gift-title { font-size: 22px; }
+    .gift-code { font-size: 20px; }
+}
