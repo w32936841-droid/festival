@@ -1,4 +1,4 @@
-// version: 0.2 - Game Logic
+// version: 0.2 - Game Logic (with old design)
 
 // ========== متغیرهای سراسری ==========
 let userId = '';

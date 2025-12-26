@@ -1,89 +1,111 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎁 جشنواره شب یلدا</title>
+    <title>شب یلدا</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/game-v0.2.css">
 </head>
 <body>
-    
-    <!-- صفحه ورودی -->
-    <div id="welcomeScreen" class="screen active">
-        <div class="welcome-container">
-            <div class="logo-container">
-                <div class="yalda-logo">🎁</div>
-                <h1 class="main-title">جشنواره شب یلدا</h1>
-                <p class="subtitle">شب یلدات مبارک! به جشنواره هدیه ما خوش آمدی</p>
+    <div class="container">
+        <!-- صفحه ورودی -->
+        <div id="welcomeScreen" class="welcome-screen active">
+            <div class="background-elements">
+                <img src="assets/images/pomegranate.png" class="floating-fruit pom-1" alt="Pomegranate">
+                <img src="assets/images/watermelon.png" class="floating-fruit water-1" alt="Watermelon">
+                <img src="assets/images/pomegranate.png" class="floating-fruit pom-2" alt="Pomegranate">
+                <img src="assets/images/watermelon.png" class="floating-fruit water-2" alt="Watermelon">
+            </div>
+
+            <div class="card">
+                <div class="logo">
+                    <img src="assets/images/logo.png" alt="ON VPN Logo">
+                </div>
+                <h1>Happy Yalda Night</h1>
+                <p class="subtitle">Yalda Night Festival</p>
+                
+                <form id="userForm" class="input-form">
+                    <label for="userId">
+                        <span class="emoji">👤</span>
+                        Enter your Telegram User ID
+                    </label>
+                    <input 
+                        type="text" 
+                        id="userId" 
+                        name="userId" 
+                        placeholder="123456789"
+                        pattern="[0-9]*"
+                        inputmode="numeric"
+                        required
+                    >
+                    <button type="submit" class="btn-submit">
+                        <span class="emoji">🎁</span>
+                        Enter the Festival
+                    </button>
+                </form>
+
+                <div class="footer">Made by ONVPN Team</div>
+            </div>
+        </div>
+
+        <!-- صفحه بازی -->
+        <div id="gameScreen" class="game-screen">
+            <div class="game-header">
+                <div class="user-info">
+                    <span>آیدی شما: </span>
+                    <span id="displayUserId" class="highlight"></span>
+                </div>
+                <div class="score-info">
+                    <span>تعداد هدایا: </span>
+                    <span id="giftCount" class="highlight">0</span>
+                </div>
             </div>
             
-            <div class="input-container">
-                <label for="userId" class="input-label">آیدی عددی خود را وارد کنید</label>
-                <input type="text" id="userId" class="user-input" placeholder="مثال: 123456" pattern="[0-9]*" inputmode="numeric">
-                <button id="startBtn" class="btn-primary">شروع 🎉</button>
+            <div id="gameArea" class="game-area">
+                <!-- میوه‌ها اینجا spawn می‌شن -->
             </div>
-            
-            <div class="snow-overlay"></div>
-        </div>
-    </div>
-
-    <!-- مودال راهنما -->
-    <div id="guideModal" class="modal">
-        <div class="modal-content">
-            <h2>📖 راهنمای بازی</h2>
-            <div class="guide-content">
-                <div class="guide-item">
-                    <span class="guide-icon">🍉</span>
-                    <p>روی هندوانه‌ها و انارهای در حال سقوط کلیک کن</p>
-                </div>
-                <div class="guide-item">
-                    <span class="guide-icon">💥</span>
-                    <p>با هر کلیک، میوه منفجر شده و هدیه‌ای دریافت می‌کنی</p>
-                </div>
-                <div class="guide-item">
-                    <span class="guide-icon">🎁</span>
-                    <p>کد هدیه خود را کپی کن و از تخفیف‌ها لذت ببر</p>
-                </div>
-            </div>
-            <button id="startGameBtn" class="btn-primary">بزن بریم! 🚀</button>
-        </div>
-    </div>
-
-    <!-- صفحه بازی -->
-    <div id="gameScreen" class="screen">
-        <div class="game-header">
-            <div class="user-info">
-                <span class="user-id-label">آیدی شما:</span>
-                <span id="displayUserId" class="user-id-value"></span>
-            </div>
-            <div class="score-info">
-                <span class="score-label">تعداد هدایا:</span>
-                <span id="giftCount" class="score-value">0</span>
-            </div>
-        </div>
-        
-        <div id="gameArea" class="game-area">
-            <!-- میوه‌ها به صورت دینامیک اینجا اضافه می‌شن -->
         </div>
 
+        <!-- مودال راهنما -->
+        <div id="guideModal" class="modal">
+            <div class="modal-content">
+                <h2>📖 راهنمای بازی</h2>
+                <div class="guide-list">
+                    <div class="guide-item">
+                        <span class="guide-emoji">🍉</span>
+                        <p>روی هندوانه‌ها و انارها کلیک کن</p>
+                    </div>
+                    <div class="guide-item">
+                        <span class="guide-emoji">💥</span>
+                        <p>میوه منفجر می‌شه و هدیه می‌گیری</p>
+                    </div>
+                    <div class="guide-item">
+                        <span class="guide-emoji">🎁</span>
+                        <p>کد هدیه رو کپی کن و استفاده کن</p>
+                    </div>
+                </div>
+                <button id="startGameBtn" class="btn-primary">بزن بریم! 🚀</button>
+            </div>
+        </div>
+
+        <!-- مودال هدیه -->
+        <div id="giftModal" class="modal">
+            <div class="modal-content gift-modal">
+                <div class="gift-icon">🎁</div>
+                <h2 id="giftTitle" class="gift-title"></h2>
+                <div id="giftCode" class="gift-code"></div>
+                <p class="gift-hint">روی کد کلیک کنید تا کپی شود</p>
+                <button id="continueBtn" class="btn-primary">ادامه بازی 🎮</button>
+            </div>
+        </div>
+
+        <!-- لودینگ -->
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- کانتینر ذرات -->
         <div id="particleContainer" class="particle-container"></div>
-    </div>
-
-    <!-- مودال هدیه -->
-    <div id="giftModal" class="modal">
-        <div class="modal-content gift-modal-content">
-            <div class="gift-icon">🎁</div>
-            <h2 id="giftTitle" class="gift-title"></h2>
-            <div id="giftCode" class="gift-code"></div>
-            <p class="gift-hint">روی کد کلیک کنید تا کپی شود</p>
-            <button id="continueBtn" class="btn-primary">ادامه بازی 🎮</button>
-        </div>
-    </div>
-
-    <!-- لودینگ -->
-    <div id="loading" class="loading hidden">
-        <div class="spinner"></div>
     </div>
 
     <script src="js/game-v0.2.js"></script>
