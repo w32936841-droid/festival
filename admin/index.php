@@ -55,7 +55,12 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
                         <label class="input-label">
                             <span class="label-text">Password</span>
-                            <input type="password" name="password" class="login-input" placeholder="Password" required autocomplete="current-password" />
+                            <div class="password-input-wrapper">
+                                <input type="password" name="password" id="password" class="login-input" placeholder="Password" required autocomplete="current-password" />
+                                <button type="button" class="password-toggle" id="password-toggle" aria-label="Toggle password visibility">
+                                    👁️
+                                </button>
+                            </div>
                         </label>
 
                         <button type="submit" name="login" class="btn btn-primary login-btn">Sign In</button>
@@ -63,6 +68,32 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 </div>
             </section>
         </main>
+
+        <script>
+            // Password visibility toggle functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                const passwordInput = document.getElementById('password');
+                const passwordToggle = document.getElementById('password-toggle');
+
+                if (passwordInput && passwordToggle) {
+                    passwordToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+
+                        // Toggle input type
+                        const isPassword = passwordInput.type === 'password';
+                        passwordInput.type = isPassword ? 'text' : 'password';
+
+                        // Update button icon
+                        this.textContent = isPassword ? '🙈' : '👁️';
+
+                        // Update aria-label
+                        this.setAttribute('aria-label',
+                            isPassword ? 'Hide password' : 'Show password'
+                        );
+                    });
+                }
+            });
+        </script>
     </body>
     </html>
     <?php
