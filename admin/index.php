@@ -106,10 +106,12 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Festival Admin Panel - v<?php echo FEST_VERSION; ?></title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
+    <link rel="stylesheet" href="../css/admin-panel.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
         * { box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -421,78 +423,149 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     </style>
 </head>
 <body>
-    <div class="layout">
-        <aside class="sidebar">
-            <h2>🎪 Festival Admin</h2>
-            <nav>
-                <a href="#dashboard" class="active" data-section="dashboard">
-                    <i class="fas fa-chart-line"></i>Dashboard
-                </a>
-                <a href="#discounts" data-section="discounts">
-                    <i class="fas fa-tags"></i>Discount Management
-                </a>
-                <a href="#themes" data-section="themes">
-                    <i class="fas fa-palette"></i>Festival Themes
-                </a>
-                <a href="#users" data-section="users">
-                    <i class="fas fa-users"></i>Users List
-                </a>
-                <a href="?logout=1" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
-                    <i class="fas fa-sign-out-alt"></i>Logout
-                </a>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebar-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="admin-layout">
+        <!-- Modern Sidebar -->
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="../assets/logo.png" alt="Festival Logo">
+                    <div>
+                        <div class="sidebar-title">Festival Admin</div>
+                        <div class="sidebar-subtitle">Management Panel</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-item">
+                    <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#discounts" class="nav-link" data-section="discounts">
+                        <i class="fas fa-tags"></i>
+                        <span>Discount Management</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#themes" class="nav-link" data-section="themes">
+                        <i class="fas fa-palette"></i>
+                        <span>Festival Themes</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#users" class="nav-link" data-section="users">
+                        <i class="fas fa-users"></i>
+                        <span>Users List</span>
+                    </a>
+                </div>
             </nav>
-            <div class="version">
-                Version: <?php echo htmlspecialchars(FEST_VERSION); ?>
+
+            <div class="sidebar-footer">
+                <div class="version-info">
+                    <i class="fas fa-code-branch"></i>
+                    <span>Version <?php echo htmlspecialchars(FEST_VERSION); ?></span>
+                </div>
+                <button class="logout-btn" onclick="window.location.href='?logout=1'">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
             </div>
         </aside>
 
-        <main class="content">
+        <!-- Main Content -->
+        <main class="admin-content" id="admin-content">
+            <div class="content-header">
+                <h1 class="page-title" id="page-title">Dashboard</h1>
+                <p class="page-subtitle" id="page-subtitle">Welcome to Festival Admin Panel</p>
+            </div>
+
             <!-- Dashboard Section -->
-            <section id="dashboard-section" class="card">
-                <h3><i class="fas fa-chart-line"></i> Dashboard</h3>
+            <section id="dashboard-section" class="glass-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h2 class="card-title">Dashboard Overview</h2>
+                </div>
 
                 <div class="time-filters">
-                    <button class="time-btn active" data-range="1h">1 hour</button>
-                    <button class="time-btn" data-range="6h">6 hours</button>
-                    <button class="time-btn" data-range="12h">12 hours</button>
-                    <button class="time-btn" data-range="24h">24 hours</button>
-                    <button class="time-btn" data-range="7d">7 days</button>
-                    <button class="time-btn" data-range="30d">30 days</button>
+                    <button class="time-btn active" data-range="1h">
+                        <i class="fas fa-clock"></i> 1 hour
+                    </button>
+                    <button class="time-btn" data-range="6h">
+                        <i class="fas fa-clock"></i> 6 hours
+                    </button>
+                    <button class="time-btn" data-range="12h">
+                        <i class="fas fa-clock"></i> 12 hours
+                    </button>
+                    <button class="time-btn" data-range="24h">
+                        <i class="fas fa-clock"></i> 24 hours
+                    </button>
+                    <button class="time-btn" data-range="7d">
+                        <i class="fas fa-calendar-week"></i> 7 days
+                    </button>
+                    <button class="time-btn" data-range="30d">
+                        <i class="fas fa-calendar-alt"></i> 30 days
+                    </button>
                 </div>
 
                 <div id="stats-container">
                     <div class="loading">
-                        <div class="spinner"></div>
-                        <p>Loading statistics...</p>
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text">Loading statistics...</p>
                     </div>
                 </div>
 
-                <div class="recent-activity" id="recent-activity" style="display: none;">
+                <div class="activity-feed" id="recent-activity" style="display: none;">
                     <h4>Recent Activity</h4>
                     <div id="activity-list"></div>
                 </div>
             </section>
 
             <!-- Discounts Section -->
-            <section id="discounts-section" class="card" style="display: none;">
-                <h3><i class="fas fa-tags"></i> Discount Management</h3>
+            <section id="discounts-section" class="glass-card" style="display: none;">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h2 class="card-title">Discount Management</h2>
+                </div>
 
-                <form id="discount-form">
+                <form id="discount-form" class="glass-form">
                     <div class="form-group">
-                        <label>Discount Percentage:</label>
-                        <input type="number" name="percent" min="1" max="90" required>
+                        <label class="form-label">Discount Percentage</label>
+                        <input type="number" name="percent" min="1" max="90" class="form-input" required placeholder="e.g., 50">
                     </div>
                     <div class="form-group">
-                        <label>Probability Weight (higher number = better chance):</label>
-                        <input type="number" name="weight" min="0" step="0.1" required>
+                        <label class="form-label">Probability Weight (higher = better chance)</label>
+                        <input type="number" name="weight" min="0" step="0.1" class="form-input" required placeholder="e.g., 10.0">
                     </div>
                     <div class="form-group">
-                        <label>Code Prefix:</label>
-                        <input type="text" name="prefix" required placeholder="Example: YALDA">
+                        <label class="form-label">Code Prefix</label>
+                        <input type="text" name="prefix" class="form-input" required placeholder="e.g., YALDA, FESTIVAL">
                     </div>
                     <div class="form-group">
-                        <label>Expiry Hours:</label>
-                        <select name="expiry_hours" required>
+                        <label class="form-label">Expiry Hours</label>
+                        <select name="expiry_hours" class="form-select" required>
                             <option value="12">12 hours</option>
                             <option value="24">24 hours</option>
                             <option value="48">48 hours</option>
@@ -500,11 +573,12 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Target Product:</label>
-                        <input type="text" name="target_product" value="30GB 30-day" required>
+                        <label class="form-label">Target Product</label>
+                        <input type="text" name="target_product" class="form-input" value="30GB 30-day" required>
                     </div>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-plus"></i>Add Discount Type
+                        <i class="fas fa-plus"></i>
+                        <span>Add Discount Type</span>
                     </button>
                 </form>
 
@@ -519,39 +593,45 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             </section>
 
             <!-- Themes Section -->
-            <section id="themes-section" class="card" style="display: none;">
-                <h3><i class="fas fa-palette"></i> Festival Themes</h3>
+            <section id="themes-section" class="glass-card" style="display: none;">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h2 class="card-title">Festival Themes</h2>
+                </div>
 
-                <form id="theme-form">
+                <form id="theme-form" class="glass-form">
                     <div class="form-group">
-                        <label>Theme Name:</label>
-                        <input type="text" name="name" required placeholder="Example: Yalda Night">
+                        <label class="form-label">Theme Name</label>
+                        <input type="text" name="name" class="form-input" required placeholder="e.g., Yalda Night, Christmas">
                     </div>
                     <div class="form-group">
-                        <label>Guide Text:</label>
-                        <textarea name="guide_text" rows="3" required placeholder="Game guide text"></textarea>
+                        <label class="form-label">Guide Text</label>
+                        <textarea name="guide_text" rows="3" class="form-input" required placeholder="Game guide text for users"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Falling Objects (comma separated):</label>
-                        <input type="text" name="falling_objects" value="🍎,🍉" required>
+                        <label class="form-label">Falling Objects (comma separated)</label>
+                        <input type="text" name="falling_objects" class="form-input" value="🍎,🍉" required placeholder="🍎,🍉,❄️">
                     </div>
                     <div class="form-group">
-                        <label>Explosion Effect:</label>
-                        <select name="explosion_effect" required>
-                            <option value="seeds">Seeds (pomegranate/watermelon)</option>
-                            <option value="snow">Snow (Christmas)</option>
-                            <option value="sparkles">Sparkles</option>
+                        <label class="form-label">Explosion Effect</label>
+                        <select name="explosion_effect" class="form-select" required>
+                            <option value="seeds">🌰 Seeds (pomegranate/watermelon)</option>
+                            <option value="snow">❄️ Snow (Christmas)</option>
+                            <option value="sparkles">✨ Sparkles</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Color Palette:</label>
-                        <div class="color-picker">
-                            <input type="color" name="primary_color" value="#dc2626" class="color-input">
-                            <input type="color" name="secondary_color" value="#16a34a" class="color-input">
+                        <label class="form-label">Color Palette</label>
+                        <div class="color-grid">
+                            <input type="color" name="primary_color" value="#dc2626" class="color-input" title="Primary Color">
+                            <input type="color" name="secondary_color" value="#16a34a" class="color-input" title="Secondary Color">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-plus"></i>Create New Theme
+                        <i class="fas fa-plus"></i>
+                        <span>Create New Theme</span>
                     </button>
                 </form>
 
@@ -566,13 +646,18 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             </section>
 
             <!-- Users Section -->
-            <section id="users-section" class="card" style="display: none;">
-                <h3><i class="fas fa-users"></i> Users List</h3>
+            <section id="users-section" class="glass-card" style="display: none;">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h2 class="card-title">Users Management</h2>
+                </div>
 
                 <div id="users-list">
                     <div class="loading">
-                        <div class="spinner"></div>
-                        <p>Loading users...</p>
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text">Loading users...</p>
                     </div>
                 </div>
             </section>
@@ -580,11 +665,13 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     </div>
 
     <!-- Modals -->
-    <div id="edit-modal" class="modal">
+    <div id="edit-modal" class="modal-overlay">
         <div class="modal-content">
-            <button class="close-btn">&times;</button>
-            <h3 id="modal-title">Edit</h3>
-            <form id="edit-form">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Edit Item</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <form id="edit-form" class="glass-form">
                 <!-- Dynamic content will be inserted here -->
             </form>
         </div>
@@ -594,6 +681,73 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
         // Global variables
         let currentSection = 'dashboard';
         let currentTimeRange = '24h';
+
+        // Initialize GSAP and modern interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize animations
+            gsap.set('.glass-card', { opacity: 0, y: 30 });
+            gsap.set('.stat-card', { opacity: 0, scale: 0.9 });
+            gsap.set('.nav-link', { x: -20, opacity: 0 });
+
+            // Animate elements on load
+            gsap.to('.glass-card', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power2.out'
+            });
+
+            gsap.to('.nav-link', {
+                x: 0,
+                opacity: 1,
+                duration: 0.6,
+                stagger: 0.05,
+                delay: 0.2,
+                ease: 'power2.out'
+            });
+
+            // Mobile sidebar toggle
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const adminSidebar = document.getElementById('admin-sidebar');
+            const adminContent = document.getElementById('admin-content');
+
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    adminSidebar.classList.toggle('mobile-open');
+                    adminContent.classList.toggle('expanded');
+                });
+            }
+
+            // Modal interactions
+            const modalClose = document.getElementById('modal-close');
+            const editModal = document.getElementById('edit-modal');
+
+            if (modalClose) {
+                modalClose.addEventListener('click', function() {
+                    gsap.to(editModal, {
+                        opacity: 0,
+                        duration: 0.3,
+                        onComplete: () => {
+                            editModal.classList.remove('active');
+                        }
+                    });
+                });
+            }
+
+            // Click outside modal to close
+            editModal.addEventListener('click', function(e) {
+                if (e.target === editModal) {
+                    gsap.to(editModal, {
+                        opacity: 0,
+                        duration: 0.3,
+                        onComplete: () => {
+                            editModal.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        });
 
         // Helper function for API calls with credentials
         async function apiFetch(url, options = {}) {
@@ -627,23 +781,36 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
         // Navigation
         function setupNavigation() {
-            document.querySelectorAll('.sidebar a').forEach(link => {
+            document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const section = this.getAttribute('data-section');
-                    switchSection(section);
+
+                    // Smooth page transition
+                    gsap.to('.glass-card', {
+                        opacity: 0,
+                        y: -20,
+                        duration: 0.3,
+                        onComplete: () => {
+                            switchSection(section);
+                            gsap.fromTo('.glass-card',
+                                { opacity: 0, y: 20 },
+                                { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+                            );
+                        }
+                    });
                 });
             });
         }
 
         function switchSection(sectionName) {
             // Hide all sections
-            document.querySelectorAll('.card').forEach(card => {
+            document.querySelectorAll('.glass-card').forEach(card => {
                 card.style.display = 'none';
             });
 
             // Remove active class from nav
-            document.querySelectorAll('.sidebar a').forEach(link => {
+            document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
 
@@ -656,6 +823,23 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             if (navElement) {
                 navElement.classList.add('active');
             }
+
+            // Update page title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'discounts': 'Discount Management',
+                'themes': 'Festival Themes',
+                'users': 'Users Management'
+            };
+            const subtitles = {
+                'dashboard': 'Welcome to Festival Admin Panel',
+                'discounts': 'Create and manage discount codes',
+                'themes': 'Customize festival themes and animations',
+                'users': 'Monitor user activity and participation'
+            };
+
+            document.getElementById('page-title').textContent = titles[sectionName] || 'Admin Panel';
+            document.getElementById('page-subtitle').textContent = subtitles[sectionName] || 'Manage your festival system';
 
             currentSection = sectionName;
 
@@ -720,23 +904,23 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             container.innerHTML = `
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h4>Participants</h4>
-                        <div class="value">${data.participants || 0}</div>
+                        <div class="stat-value">${data.participants || 0}</div>
+                        <div class="stat-label">Participants</div>
                     </div>
                     <div class="stat-card">
-                        <h4>Prizes Won</h4>
-                        <div class="value">${data.prizes_won || 0}</div>
+                        <div class="stat-value">${data.prizes_won || 0}</div>
+                        <div class="stat-label">Prizes Won</div>
                     </div>
                     <div class="stat-card">
-                        <h4>Server CPU</h4>
-                        <div class="value">${data.server_stats.cpu}%</div>
+                        <div class="stat-value">${data.server_stats.cpu}%</div>
+                        <div class="stat-label">Server CPU</div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: ${data.server_stats.cpu}%"></div>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <h4>Server RAM</h4>
-                        <div class="value">${data.server_stats.ram}%</div>
+                        <div class="stat-value">${data.server_stats.ram}%</div>
+                        <div class="stat-label">Server RAM</div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: ${data.server_stats.ram}%"></div>
                         </div>
@@ -761,16 +945,45 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 const activityList = document.getElementById('activity-list');
                 activityList.innerHTML = data.recent_activity.map(activity => `
                     <div class="activity-item">
-                        <div>
-                            <strong>${activity.user_id}</strong>
-                            <span>${activity.action}</span>
-                            ${activity.prize_code ? `<code>${activity.prize_code}</code>` : ''}
+                        <div class="activity-icon">
+                            <i class="fas fa-${activity.action === 'won_prize' ? 'trophy' : activity.action === 'participated' ? 'gamepad' : 'user'}"></i>
                         </div>
-                        <small>${new Date(activity.timestamp).toLocaleString('fa-IR')}</small>
+                        <div class="activity-content">
+                            <div class="activity-text">
+                                <strong>${activity.user_id}</strong> ${activity.action}
+                                ${activity.prize_code ? `<code>${activity.prize_code}</code>` : ''}
+                            </div>
+                            <div class="activity-time">${new Date(activity.timestamp).toLocaleString('fa-IR')}</div>
+                        </div>
                     </div>
                 `).join('');
                 document.getElementById('recent-activity').style.display = 'block';
             }
+
+            // Animate stat cards
+            gsap.fromTo('.stat-card',
+                { opacity: 0, scale: 0.8, y: 20 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    ease: 'back.out(1.7)',
+                    delay: 0.2
+                }
+            );
+
+            // Animate progress bars
+            gsap.fromTo('.progress-fill',
+                { width: 0 },
+                {
+                    width: 'var(--target-width)',
+                    duration: 1,
+                    ease: 'power2.out',
+                    delay: 0.5
+                }
+            );
         }
 
         // Discounts
@@ -1241,12 +1454,29 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
             const alert = document.createElement('div');
             alert.className = `alert alert-${type}`;
-            alert.textContent = message;
 
-            document.querySelector('.content').insertBefore(alert, document.querySelector('.content').firstChild);
+            const icon = type === 'success' ? 'check-circle' :
+                        type === 'error' ? 'exclamation-triangle' : 'info-circle';
+            alert.innerHTML = `
+                <i class="fas fa-${icon}"></i>
+                <span>${message}</span>
+            `;
+
+            document.querySelector('.admin-content').insertBefore(alert, document.querySelector('.admin-content').firstChild);
+
+            // Animate alert entrance
+            gsap.fromTo(alert,
+                { opacity: 0, y: -20, scale: 0.9 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.7)' }
+            );
 
             setTimeout(() => {
-                alert.remove();
+                gsap.to(alert, {
+                    opacity: 0,
+                    y: -20,
+                    duration: 0.3,
+                    onComplete: () => alert.remove()
+                });
             }, 5000);
         }
     </script>
