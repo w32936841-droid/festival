@@ -727,7 +727,138 @@ body {
     color: var(--text-primary);
 }
 
-/* Modals */
+/* Modern Glass Modals */
+.glass-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-slow);
+}
+
+.glass-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.glass-modal-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem;
+    perspective: 1000px;
+}
+
+.glass-modal-content {
+    background: var(--glass-bg-primary);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-2xl);
+    box-shadow:
+        0 25px 50px -12px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    transform: scale(0.9) rotateX(15deg) translateY(30px);
+    transition: var(--transition-slow);
+    overflow: hidden;
+}
+
+.glass-modal-overlay.active .glass-modal-content {
+    transform: scale(1) rotateX(0deg) translateY(0);
+}
+
+.glass-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 2rem 1.5rem;
+    border-bottom: 1px solid var(--glass-border);
+    position: relative;
+}
+
+.glass-modal-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #008080, #00d4aa, #008080);
+}
+
+.modal-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #008080, #00d4aa);
+    border-radius: var(--border-radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+    box-shadow: 0 8px 16px rgba(0, 128, 128, 0.3);
+}
+
+.glass-modal-title {
+    flex: 1;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.glass-modal-close {
+    background: var(--glass-bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    color: var(--text-secondary);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-size: 1.125rem;
+}
+
+.glass-modal-close:hover {
+    background: var(--glass-bg-tertiary);
+    border-color: var(--glass-border-hover);
+    color: var(--text-primary);
+    transform: rotate(90deg);
+}
+
+.glass-modal-body {
+    padding: 2rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.glass-modal-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding: 1.5rem 2rem 2rem;
+    border-top: 1px solid var(--glass-border);
+    background: var(--glass-bg-secondary);
+}
+
+/* Legacy Modal Support (for backward compatibility) */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1103,6 +1234,70 @@ body {
     grid-column: 1 / -1;
 }
 
+/* Expiry Hours Input Group */
+.expiry-input-group {
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+}
+
+.expiry-preset {
+    flex: 1;
+}
+
+.expiry-custom {
+    flex: 1;
+    display: none;
+}
+
+/* Modern Select Styling */
+.form-select {
+    padding: 0.875rem 2.5rem 0.875rem 1rem;
+    background: var(--glass-bg-tertiary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    position: relative;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #008080;
+    box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.1);
+}
+
+.form-select:hover {
+    border-color: var(--glass-border-hover);
+}
+
+/* Custom scrollbar for select options (webkit browsers) */
+.form-select::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-select::-webkit-scrollbar-track {
+    background: var(--glass-bg-tertiary);
+    border-radius: 4px;
+}
+
+.form-select::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 4px;
+}
+
+.form-select::-webkit-scrollbar-thumb:hover {
+    background: var(--glass-border-hover);
+}
+
 .form-actions {
     display: flex;
     gap: 1rem;
@@ -1310,6 +1505,47 @@ body {
 
     .form-actions .btn {
         width: 100%;
+    }
+
+    .expiry-input-group {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .expiry-custom {
+        display: block !important;
+    }
+
+    .glass-modal-content {
+        margin: 1rem;
+        max-width: none;
+    }
+
+    .glass-modal-header {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    .glass-modal-body {
+        padding: 1.5rem;
+    }
+
+    .glass-modal-footer {
+        padding: 1rem 1.5rem 1.5rem;
+        flex-direction: column;
+    }
+
+    .glass-modal-footer .btn {
+        width: 100%;
+    }
+
+    .modal-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .glass-modal-title {
+        font-size: 1.25rem;
     }
 
     .time-filters {

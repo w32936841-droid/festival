@@ -280,12 +280,18 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Expiry Hours</label>
-                                <select name="expiry_hours" class="form-select" required>
-                                    <option value="12">12 hours</option>
-                                    <option value="24">24 hours</option>
-                                    <option value="48">48 hours</option>
-                                    <option value="72">72 hours</option>
-                                </select>
+                                <div class="expiry-input-group">
+                                    <select name="expiry_preset" class="form-select expiry-preset" id="expiry-preset">
+                                        <option value="">Custom hours...</option>
+                                        <option value="12">12 hours</option>
+                                        <option value="24">24 hours</option>
+                                        <option value="48">48 hours</option>
+                                        <option value="72">72 hours</option>
+                                        <option value="168">1 week</option>
+                                        <option value="720">1 month</option>
+                                    </select>
+                                    <input type="number" name="expiry_hours" class="form-input expiry-custom" id="expiry-custom" min="1" max="8760" placeholder="Enter hours" required>
+                                </div>
                             </div>
                             <div class="form-group full-width">
                                 <label class="form-label">Target Product</label>
@@ -393,16 +399,36 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
         </main>
     </div>
 
-    <!-- Modals -->
-    <div id="edit-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modal-title">Edit Item</h3>
-                <button class="modal-close" id="modal-close">&times;</button>
+    <!-- Modern Glass Modal -->
+    <div id="edit-modal" class="glass-modal-overlay">
+        <div class="glass-modal-container">
+            <div class="glass-modal-content">
+                <div class="glass-modal-header">
+                    <div class="modal-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h3 class="glass-modal-title" id="modal-title">Edit Discount Type</h3>
+                    <button class="glass-modal-close" id="modal-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="glass-modal-body">
+                    <form id="edit-form" class="glass-form">
+                        <!-- Dynamic content will be inserted here -->
+                    </form>
+                </div>
+
+                <div class="glass-modal-footer">
+                    <button type="button" class="btn btn-ghost" id="modal-cancel">
+                        <span>Cancel</span>
+                    </button>
+                    <button type="submit" form="edit-form" class="btn btn-primary" id="modal-save">
+                        <i class="fas fa-save"></i>
+                        <span>Save Changes</span>
+                    </button>
+                </div>
             </div>
-            <form id="edit-form" class="glass-form">
-                <!-- Dynamic content will be inserted here -->
-            </form>
         </div>
     </div>
 
@@ -477,31 +503,33 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
             // Modal interactions
             const modalClose = document.getElementById('modal-close');
+            const modalCancel = document.getElementById('modal-cancel');
             const editModal = document.getElementById('edit-modal');
 
-            if (modalClose) {
-                modalClose.addEventListener('click', function() {
-                    gsap.to(editModal, {
-                        opacity: 0,
-                        duration: 0.3,
-                        onComplete: () => {
-                            editModal.classList.remove('active');
-                        }
-                    });
+            function closeModal() {
+                gsap.to(editModal, {
+                    opacity: 0,
+                    duration: 0.3,
+                    ease: 'power2.in',
+                    onComplete: () => {
+                        editModal.classList.remove('active');
+                    }
                 });
+            }
+
+            if (modalClose) {
+                modalClose.addEventListener('click', closeModal);
+            }
+
+            if (modalCancel) {
+                modalCancel.addEventListener('click', closeModal);
             }
 
             // Click outside modal to close
             if (editModal) {
                 editModal.addEventListener('click', function(e) {
-                    if (e.target === editModal) {
-                        gsap.to(editModal, {
-                            opacity: 0,
-                            duration: 0.3,
-                            onComplete: () => {
-                                editModal.classList.remove('active');
-                            }
-                        });
+                    if (e.target === editModal || e.target.classList.contains('glass-modal-overlay')) {
+                        closeModal();
                     }
                 });
             }
@@ -577,6 +605,29 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                         addDiscountBtn.style.display = 'flex';
                     }
                 });
+            }
+
+            // Expiry hours input management
+            const expiryPreset = document.getElementById('expiry-preset');
+            const expiryCustom = document.getElementById('expiry-custom');
+
+            if (expiryPreset && expiryCustom) {
+                expiryPreset.addEventListener('change', function() {
+                    if (this.value === '') {
+                        expiryCustom.style.display = 'block';
+                        expiryCustom.required = true;
+                        expiryCustom.focus();
+                        gsap.fromTo(expiryCustom, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.3 });
+                    } else {
+                        expiryCustom.style.display = 'none';
+                        expiryCustom.required = false;
+                        expiryCustom.value = this.value;
+                    }
+                });
+
+                // Initialize - hide custom input by default
+                expiryCustom.style.display = 'none';
+                expiryCustom.required = false;
             }
 
             setupNavigation();
