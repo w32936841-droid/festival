@@ -112,315 +112,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/admin-panel.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-        * { box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            background: linear-gradient(135deg, #0b1020 0%, #1a1a2e 100%);
-            color: #e2e8f0;
-            direction: rtl;
-        }
-        .layout { display: flex; min-height: 100vh; }
-        .sidebar {
-            width: 280px;
-            background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
-            padding: 25px 20px;
-            box-shadow: 2px 0 15px rgba(0,0,0,0.3);
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        .sidebar h2 {
-            font-size: 22px;
-            margin: 0 0 25px;
-            color: #f1f5f9;
-            text-align: center;
-            border-bottom: 2px solid #475569;
-            padding-bottom: 15px;
-        }
-        .sidebar nav { margin-bottom: 30px; }
-        .sidebar a {
-            color: #cbd5e1;
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            text-decoration: none;
-            border-radius: 8px;
-            margin-bottom: 5px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-        .sidebar a:hover, .sidebar a.active {
-            background: rgba(59, 130, 246, 0.2);
-            color: #60a5fa;
-            transform: translateX(-5px);
-        }
-        .sidebar a i { margin-left: 10px; width: 20px; }
-        .sidebar .version {
-            font-size: 12px;
-            opacity: 0.7;
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #475569;
-        }
-        .content {
-            flex: 1;
-            margin-right: 280px;
-            padding: 30px;
-            overflow-x: auto;
-        }
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        }
-        .card h3 {
-            margin: 0 0 20px;
-            color: #f1f5f9;
-            font-size: 24px;
-            border-bottom: 2px solid #475569;
-            padding-bottom: 10px;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-        }
-        .stat-card h4 {
-            margin: 0 0 10px;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        .stat-card .value {
-            font-size: 32px;
-            font-weight: bold;
-            margin: 0;
-        }
-        .time-filters {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .time-btn {
-            padding: 8px 16px;
-            border: 1px solid #475569;
-            background: transparent;
-            color: #cbd5e1;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .time-btn.active, .time-btn:hover {
-            background: #3b82f6;
-            border-color: #3b82f6;
-        }
-        .recent-activity {
-            max-height: 400px;
-            overflow-y: auto;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-            padding: 15px;
-        }
-        .activity-item {
-            padding: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .activity-item:last-child { border-bottom: none; }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #e2e8f0;
-        }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #475569;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.05);
-            color: #e2e8f0;
-            font-size: 14px;
-        }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-        }
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            color: white;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-        }
-        .btn-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-        }
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-        }
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: rgba(255,255,255,0.02);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .table th, .table td {
-            padding: 12px;
-            text-align: right;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .table th {
-            background: rgba(255,255,255,0.05);
-            font-weight: 600;
-            color: #f1f5f9;
-        }
-        .table tr:hover {
-            background: rgba(255,255,255,0.02);
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal.active { display: flex; }
-        .modal-content {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .modal h3 { margin-top: 0; }
-        .close-btn {
-            float: left;
-            background: none;
-            border: none;
-            color: #cbd5e1;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 0;
-        }
-        .server-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .server-stat {
-            text-align: center;
-            padding: 15px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 8px;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #10b981 0%, #ef4444 100%);
-            transition: width 0.3s ease;
-        }
-        .loading { text-align: center; padding: 20px; }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top-color: #3b82f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .alert {
-            padding: 12px 16px;
-            border-radius: 6px;
-            margin: 10px 0;
-        }
-        .alert-success { background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #34d399; }
-        .alert-error { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #f87171; }
-        .theme-preview {
-            display: inline-block;
-            width: 100px;
-            height: 60px;
-            border-radius: 6px;
-            margin: 5px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-        .theme-preview.active { border-color: #3b82f6; }
-        .color-picker {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .color-input {
-            width: 50px;
-            height: 50px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        @media (max-width: 768px) {
-            .sidebar { width: 100%; position: relative; height: auto; }
-            .content { margin-right: 0; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .time-filters { justify-content: center; }
-        }
-    </style>
 </head>
 <body>
     <!-- Animated Background -->
@@ -682,9 +373,28 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
         let currentSection = 'dashboard';
         let currentTimeRange = '24h';
 
-        // Initialize GSAP and modern interactions
+
+        // Helper function for API calls with credentials
+        async function apiFetch(url, options = {}) {
+            console.log('Making API call to:', url);
+            return fetch(url, {
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                },
+                ...options
+            }).then(response => {
+                console.log('API response status:', response.status);
+                return response;
+            });
+        }
+
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize animations
+            console.log('Admin panel initializing...');
+
+            // Initialize GSAP animations
             gsap.set('.glass-card', { opacity: 0, y: 30 });
             gsap.set('.stat-card', { opacity: 0, scale: 0.9 });
             gsap.set('.nav-link', { x: -20, opacity: 0 });
@@ -706,6 +416,11 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 delay: 0.2,
                 ease: 'power2.out'
             });
+
+            console.log('Checking admin session...');
+
+            // Simple session check - if we reached here, PHP already checked the session
+            console.log('Session OK, loading admin panel');
 
             // Mobile sidebar toggle
             const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -736,43 +451,20 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             }
 
             // Click outside modal to close
-            editModal.addEventListener('click', function(e) {
-                if (e.target === editModal) {
-                    gsap.to(editModal, {
-                        opacity: 0,
-                        duration: 0.3,
-                        onComplete: () => {
-                            editModal.classList.remove('active');
-                        }
-                    });
-                }
-            });
-        });
+            if (editModal) {
+                editModal.addEventListener('click', function(e) {
+                    if (e.target === editModal) {
+                        gsap.to(editModal, {
+                            opacity: 0,
+                            duration: 0.3,
+                            onComplete: () => {
+                                editModal.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            }
 
-        // Helper function for API calls with credentials
-        async function apiFetch(url, options = {}) {
-            console.log('Making API call to:', url);
-            return fetch(url, {
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...options.headers
-                },
-                ...options
-            }).then(response => {
-                console.log('API response status:', response.status);
-                return response;
-            });
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Admin panel initializing...');
-
-            console.log('Checking admin session...');
-
-            // Simple session check - if we reached here, PHP already checked the session
-            console.log('Session OK, loading admin panel');
             setupNavigation();
             setupTimeFilters();
             loadDashboard();
