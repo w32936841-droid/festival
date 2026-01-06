@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Position Test</title>
+    <style>
+        body {
+            font-family: 'Vazir', sans-serif;
+            background: linear-gradient(135deg, #0b1020 0%, #1a1a2e 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: white;
+        }
+
+        #test-fruit {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #dc2626;
+            border-radius: 50%;
+            cursor: pointer;
+            left: 300px;
+            top: 200px;
+            z-index: 1000;
+        }
+
+        #seeds-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff0000;
+            border-radius: 50%;
+            animation: burst 1s ease-out forwards;
+        }
+
+        @keyframes burst {
+            0% { transform: translate(0,0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0.5); opacity: 0; }
+        }
+
+        .info {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Position Test</h1>
+    <p>روی میوه قرمز کلیک کنید</p>
+
+    <div class="info" id="info">
+        Click the red fruit to test particle positioning
+    </div>
+
+    <div id="seeds-container"></div>
+    <div id="test-fruit">🍎</div>
+
+    <script>
+        const fruit = document.getElementById('test-fruit');
+        const container = document.getElementById('seeds-container');
+        const info = document.getElementById('info');
+
+        fruit.addEventListener('click', () => {
+            // Get fruit position
+            const rect = fruit.getBoundingClientRect();
+            const centerX = rect.left + rect.width/2;
+            const centerY = rect.top + rect.height/2;
+
+            info.innerHTML = `
+                Fruit rect: left=${rect.left}, top=${rect.top}, width=${rect.width}, height=${rect.height}<br>
+                Fruit center: x=${centerX}, y=${centerY}<br>
+                Container: ${container.id}
+            `;
+
+            // Create particles
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+
+                // Calculate relative position to container
+                const containerRect = container.getBoundingClientRect();
+                const relativeX = centerX - containerRect.left;
+                const relativeY = centerY - containerRect.top;
+
+                particle.style.left = relativeX + 'px';
+                particle.style.top = relativeY + 'px';
+
+                // Calculate trajectory
+                const angle = (Math.PI * 2 * i) / 8;
+                const distance = 100;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+
+                container.appendChild(particle);
+
+                info.innerHTML += `<br>Particle ${i}: relative(${relativeX}, ${relativeY}) -> (${tx}, ${ty})`;
+
+                setTimeout(() => particle.remove(), 1500);
+            }
+        });
+    </script>
+</body>
+</html>

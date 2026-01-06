@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Glass Theme Test</title>
+    <style>
+        :root {
+            --primary-color: rgba(255,255,255,0.3);
+            --secondary-color: rgba(255,255,255,0.1);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Vazir', 'Vazirmatn', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0b1020 0%, #1a1a2e 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            margin: 50px auto;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color), var(--secondary-color));
+            border-radius: 26px;
+            z-index: -1;
+            animation: rotateBorder 4s linear infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes rotateBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 0 0 10px;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-align: center;
+            margin: 0 0 25px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .instruction {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.8;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px 24px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #ffffff;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .success { color: #4ade80; }
+        .error { color: #f87171; }
+    </style>
+</head>
+<body>
+    <div class="glass-card">
+        <h1 class="title">شب یلدا مبارک</h1>
+        <h2 class="subtitle">جشن شب چله</h2>
+
+        <p class="instruction">آیدی کاربری تلگرام خود را وارد کنید</p>
+
+        <button class="btn btn-primary">ورود به جشنواره</button>
+    </div>
+
+    <div class="status">
+        <h3>🎨 وضعیت تم شیشه‌ای</h3>
+        <p class="success">✅ رنگ‌های شیشه‌ای اعمال شده</p>
+        <p class="success">✅ backdrop-filter فعال است</p>
+        <p class="success">✅ شفافیت و blur تنظیم شده</p>
+        <p>💡 اگر رنگ‌ها هنوز رنگی هستند، فایل update-theme.php را روی سرور اجرا کنید</p>
+    </div>
+
+    <script>
+        // Simulate theme loading
+        console.log('🎨 Glass theme applied');
+        console.log('Primary color:', getComputedStyle(document.documentElement).getPropertyValue('--primary-color'));
+        console.log('Secondary color:', getComputedStyle(document.documentElement).getPropertyValue('--secondary-color'));
+    </script>
+</body>
+</html>

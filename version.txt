@@ -1,14 +1,68 @@
-Yalda Festival - v0.3.1 (Bug Fix Release)
+# Festival Reward System - v1.0.2 (Enhanced Release)
 
-## 🐛 Critical Bug Fix - v0.3.1
-- Fixed HTML element ID mismatches that prevented game from working
-- Button now enables when valid user ID is entered
-- All JavaScript event listeners properly attached
+## 🎉 Major Release v1.0.1 - Complete Festival System
+- ✅ Full admin panel with 4 sections: Dashboard, Discount Management, Themes, Users
+- ✅ Weighted probability lottery system with security
+- ✅ Telegram Bot API integration for user validation and discount creation
+- ✅ Enhanced animations and explosion effects
+- ✅ 24-hour cooldown system implementation
+- ✅ Comprehensive theme management system
+- ✅ User participation tracking and analytics
 
-## Stage 3 Complete - API Integration (v0.3)
-- Database: gifts & gift_logs tables ready with is_active, description, client_ip, user_agent
-- API: get-gift.php v0.3 with full CORS support and enhanced logging
-- Game: game-v0.3.js integrated with API, description display, improved UX
-- Frontend: index.html updated to load game-v0.3.js
+## 🔧 Technical Improvements
+- Clean config.php with proper database abstraction
+- Complete admin API with dashboard statistics
+- Enhanced frontend with improved UX and animations
+- Bot API integration for real-time discount creation
+- Proper error handling and logging throughout
 
-## Next: Stage 4 - Admin Panel & Full Testing
+## 🎯 Key Features Implemented
+### Admin Panel
+- **Dashboard**: Real-time statistics, server monitoring, activity logs
+- **Discount Management**: Create/edit/delete discount types with weighted probabilities
+- **Theme Management**: Logo, background, falling objects, color palette configuration
+- **User Management**: Participant tracking, activity logs, cooldown monitoring
+
+### Lottery System
+- Weighted probability system (90% discount = 0.1% chance, 5% discount = 30% chance)
+- Try Again (Respin) and No Prize outcomes
+- Server-side lottery calculation for security
+- 24-hour participation cooldown
+
+### Frontend Experience
+- Falling objects game with click-to-win mechanics
+- Enhanced explosion animations (seeds, snow, sparkles)
+- Bilingual interface (Persian/English)
+- Real-time user validation via Telegram Bot API
+- Copy-to-clipboard discount codes
+
+### Bot Integration
+- User existence validation
+- Automatic discount code creation in bot system
+- Real-time notifications to users
+- Product management integration
+
+## 📊 Database Schema
+- Complete table structure for themes, users, logs, discount_types, discounts
+- Proper foreign key relationships
+- Optimized for performance and analytics
+
+## 🔒 Security Features
+- Server-side lottery calculation
+- User validation via Telegram Bot API
+- Input sanitization and validation
+- Proper error handling and logging
+- CORS protection and rate limiting
+
+## 🎨 UI/UX Enhancements
+- Glass morphism design
+- Smooth animations and transitions
+- Responsive design for mobile devices
+- Loading states and user feedback
+- Enhanced particle effects for explosions
+
+## 🚀 Production Ready
+- Error logging and monitoring
+- Performance optimized
+- Scalable architecture
+- Comprehensive API documentation

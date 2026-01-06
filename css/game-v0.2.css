@@ -1,6 +1,6 @@
 /* version: 0.2 - Game CSS */
 
-/* ========== متغیرهای رنگی یلدا ========== */
+/* ========== Yalda color variables ========== */
 :root {
     --yalda-red: #d32f2f;
     --yalda-dark: #1a1a2e;
@@ -11,7 +11,7 @@
     --watermelon: #e91e63;
 }
 
-/* ========== تنظیمات پایه ========== */
+/* ========== Base settings ========== */
 * {
     margin: 0;
     padding: 0;
@@ -26,7 +26,7 @@ body {
     height: 100vh;
 }
 
-/* ========== صفحه‌ها ========== */
+/* ========== Pages ========== */
 .screen {
     display: none;
     width: 100%;
@@ -38,7 +38,7 @@ body {
     display: block;
 }
 
-/* ========== صفحه خوشامدگویی ========== */
+/* ========== Welcome page ========== */
 #welcomeScreen {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
@@ -123,7 +123,7 @@ body {
     box-shadow: 0 8px 25px rgba(0,0,0,0.4);
 }
 
-/* ========== مودال‌ها ========== */
+/* ========== Modals ========== */
 .modal {
     display: none;
     position: fixed;
@@ -178,7 +178,7 @@ body {
     font-size: 16px;
 }
 
-/* ========== صفحه بازی ========== */
+/* ========== Game page ========== */
 .game-header {
     display: flex;
     justify-content: space-between;
@@ -206,7 +206,7 @@ body {
     overflow: hidden;
 }
 
-/* ========== میوه‌ها ========== */
+/* ========== Fruits ========== */
 .fruit {
     position: absolute;
     cursor: pointer;
@@ -228,7 +228,7 @@ body {
     100% { transform: scale(2); opacity: 0; }
 }
 
-/* ========== ذرات (دانه‌ها) ========== */
+/* ========== Particles (seeds) ========== */
 .particle-container {
     position: fixed;
     top: 0;
@@ -252,7 +252,7 @@ body {
     }
 }
 
-/* ========== مودال هدیه ========== */
+/* ========== Gift modal ========== */
 .gift-modal-content {
     max-width: 600px;
 }
@@ -296,7 +296,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* ========== لودینگ ========== */
+/* ========== Loading ========== */
 .loading {
     position: fixed;
     top: 0;
@@ -327,7 +327,7 @@ body {
     to { transform: rotate(360deg); }
 }
 
-/* ========== ریسپانسیو ========== */
+/* ========== Responsive ========== */
 @media (max-width: 768px) {
     .main-title { font-size: 36px; }
     .subtitle { font-size: 16px; }

@@ -1,25 +1,28 @@
 <?php
 /**
- * Yalda Festival - User ID Validation Endpoint
+ * Festival System - User ID Validation Endpoint
  * Validates if a Telegram User ID exists in the bot database
+ * Version: 1.0.1
  */
 
-define('YALDA_API', true);
-require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/bot-api.php';
 
-// Set JSON header
-header('Content-Type: application/json; charset=UTF-8');
-
-// CORS headers for cross-origin requests
+// CORS headers - MUST be before any output
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, X-API-Key');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Max-Age: 86400'); // 24 hours
 
 // Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
+
+// Set JSON header
+header('Content-Type: application/json; charset=UTF-8');
 
 // Only accept POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -40,79 +43,72 @@ if (!$data || !isset($data['telegram_id'])) {
     http_response_code(400);
     echo json_encode([
         'success' => false,
-        'message' => ERROR_INVALID_REQUEST
+        'message' => 'User ID is required'
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 $telegramId = trim($data['telegram_id']);
 
-// Validate format
-if (!ctype_digit($telegramId) || strlen($telegramId) < 5) {
+// Validate format (Telegram user IDs are numeric and typically 9-10 digits)
+if (!ctype_digit($telegramId) || strlen($telegramId) < 5 || strlen($telegramId) > 15) {
     http_response_code(400);
     echo json_encode([
         'success' => false,
-        'message' => 'آیدی کاربری نامعتبر است | Invalid User ID format'
+        'message' => 'Invalid User ID format'
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-yaldaLog("Validation request for User ID: $telegramId");
+// Log the validation request
+logEvent('user_validation_attempt', ['user_id' => $telegramId]);
 
-// Call bot API to check if user exists - FIXED: use chat_id parameter
-$response = callBotAPI('users', 'GET', [
-    'actions' => 'user',
-    'chat_id' => $telegramId  // FIXED: was 'chatid', now 'chat_id'
+// Check if bot token is configured
+if (BOT_API_TOKEN === 'REPLACE_WITH_TOKEN' || empty(BOT_API_TOKEN)) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Bot API token not configured',
+        'details' => 'Please configure BOT_API_TOKEN in config.php'
+    ], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+// Check if user exists using bot API
+$userCheck = checkTelegramUser($telegramId);
+
+// Log for debugging
+logEvent('bot_api_check', [
+    'user_id' => $telegramId,
+    'result' => $userCheck
 ]);
 
-// Check if API call was successful
-if (!$response['success']) {
-    http_response_code(503);
-    echo json_encode([
-        'success' => false,
-        'message' => ERROR_API_CONNECTION,
-        'debug' => $response['error'] ?? 'Unknown error'
-    ], JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-// Check if user exists in bot
-$apiData = $response['data'];
-
-if (!$apiData || !isset($apiData['status']) || $apiData['status'] !== true) {
+if (!$userCheck['valid']) {
     http_response_code(404);
     echo json_encode([
         'success' => false,
-        'message' => ERROR_USER_NOT_FOUND,
-        'api_message' => $apiData['msg'] ?? 'Unknown error'
+        'message' => $userCheck['error'] ?: 'User not found in bot system',
+        'details' => 'Please start the bot first and try again',
+        'debug' => [
+            'user_id' => $telegramId,
+            'token_set' => !empty(BOT_API_TOKEN),
+            'api_url' => BOT_API_URL,
+            'error' => $userCheck['error'] ?? 'Unknown error'
+        ]
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-// Check if user data exists
-if (empty($apiData['obj']['users'])) {
-    // User doesn't exist - tell them to start the bot
-    http_response_code(404);
-    echo json_encode([
-        'success' => false,
-        'message' => ERROR_USER_NOT_STARTED_BOT
-    ], JSON_UNESCAPED_UNICODE);
-    exit;
-}
+// User is valid
+logEvent('user_validation_success', ['user_id' => $telegramId]);
 
-$userData = $apiData['obj']['users'][0];
-
-yaldaLog("User found", $userData);
-
-// User exists and is valid
 http_response_code(200);
 echo json_encode([
     'success' => true,
-    'message' => 'آیدی کاربری معتبر است | User ID is valid',
-    'user' => [
-        'user_id' => $userData['user_id'],
-        'username' => $userData['username'] ?? 'none',
-        'status' => $userData['User_Status'] ?? 'Active'
+    'message' => 'User ID is valid',
+    'user' => $userCheck['user_data'] ?? [
+        'user_id' => $telegramId,
+        'status' => 'active'
     ]
 ], JSON_UNESCAPED_UNICODE);
 ?>

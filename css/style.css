@@ -1,5 +1,5 @@
 /* ============================================
-   YALDA PROJECT - MAIN STYLESHEET
+   FESTIVAL PROJECT - MAIN STYLESHEET
    Glass morphism design with falling fruits animation
    Bilingual with language toggle
    ============================================ */
@@ -19,7 +19,7 @@ html {
 }
 
 body {
-    font-family: 'Vazirmatn', 'Poppins', sans-serif;
+    font-family: 'Vazir', 'Vazirmatn', 'Poppins', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
     background-image: url('../assets/background.png');
@@ -33,7 +33,7 @@ body {
 
 /* Font switching based on language */
 [data-lang="fa"] body {
-    font-family: 'Vazirmatn', sans-serif;
+    font-family: 'Vazir', 'Vazirmatn', sans-serif;
 }
 
 [data-lang="en"] body {
@@ -91,20 +91,25 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1;
+    z-index: 1000; /* above modal */
     overflow: hidden;
 }
 
 /* Fruit styling - will be added dynamically by JS */
-.falling-fruit {
+.falling-fruit, .fruit {
     position: absolute;
     width: 60px;
     height: 60px;
-    pointer-events: auto;
+    pointer-events: auto !important; /* ensure clickability */
     cursor: pointer;
     transition: transform 0.2s ease;
     animation: fall linear infinite;
     opacity: 0.9;
+    font-size: 50px;
+    text-align: center;
+    line-height: 60px;
+    z-index: 1000; /* above everything */
+    user-select: none;
 }
 
 .falling-fruit:hover {
@@ -119,15 +124,273 @@ body {
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
-/* Falling animation keyframes */
+/* Enhanced falling animation keyframes */
 @keyframes fall {
     0% {
         top: -100px;
-        transform: rotate(0deg);
+        transform: rotate(0deg) scale(1);
+        opacity: 0.9;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
     }
     100% {
         top: 100vh;
-        transform: rotate(360deg);
+        transform: rotate(360deg) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* Explosion animation for fruits */
+@keyframes fruit-explode {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    25% {
+        transform: scale(1.3) rotate(90deg);
+        opacity: 0.9;
+    }
+    50% {
+        transform: scale(1.6) rotate(180deg);
+        opacity: 0.7;
+    }
+    75% {
+        transform: scale(1.8) rotate(270deg);
+        opacity: 0.4;
+    }
+    100% {
+        transform: scale(2.2) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Particle explosion animations */
+@keyframes particle-explosion {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0.3) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Enhanced seed burst with different patterns */
+.seed-watermelon, .seed-watermelon.demo-particle {
+    background: #4ade80;
+    color: white;
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.8);
+}
+
+.seed-pomegranate, .seed-pomegranate.demo-particle {
+    background: #dc2626;
+    color: white;
+    box-shadow: 0 0 6px rgba(220, 38, 38, 0.8);
+}
+
+.seed-snow, .seed-snow.demo-particle {
+    background: #ffffff;
+    color: #3b82f6;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+}
+
+/* Demo particles - smaller and faster */
+.demo-particle {
+    animation: seedBurst 1.2s ease-out forwards !important;
+    font-size: 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+    line-height: 16px !important;
+}
+
+.seed-sparkle {
+    background: radial-gradient(circle, #ffd700 50%, #ffed4e 100%);
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.9);
+    animation: sparkleParticle 1.5s ease-out forwards;
+}
+
+@keyframes snowParticle {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    30% {
+        opacity: 0.9;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0.1) rotate(360deg);
+        opacity: 0;
+        filter: blur(2px);
+    }
+}
+
+@keyframes sparkleParticle {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+        transform: translate(var(--tx), var(--ty)) scale(1.2) rotate(180deg);
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0.3) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Enhanced fruit hover effects */
+.falling-fruit {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.falling-fruit:hover {
+    transform: scale(1.2) rotate(5deg);
+    opacity: 1;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4)) brightness(1.1);
+}
+
+/* Click feedback animation */
+.falling-fruit:active {
+    transform: scale(0.9) rotate(-5deg);
+    transition: transform 0.1s ease;
+}
+
+/* Fruit explosion container */
+.fruit-explosion {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Winner celebration animation */
+@keyframes winner-celebration {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    25% {
+        transform: scale(1.1);
+        opacity: 0.9;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    75% {
+        transform: scale(1.1);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.winner-celebration {
+    animation: winner-celebration 0.6s ease-in-out;
+}
+
+/* Glow effect for special fruits */
+.fruit-glow {
+    box-shadow:
+        0 0 20px rgba(34, 197, 94, 0.6),
+        0 0 40px rgba(34, 197, 94, 0.4),
+        0 0 60px rgba(34, 197, 94, 0.2);
+    animation: glow-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow-pulse {
+    from {
+        filter: brightness(1) drop-shadow(0 0 10px rgba(34, 197, 94, 0.5));
+    }
+    to {
+        filter: brightness(1.2) drop-shadow(0 0 20px rgba(34, 197, 94, 0.8));
+    }
+}
+
+/* Shatter effect for different themes */
+.shatter-pomegranate {
+    animation: pomegranate-shatter 0.8s ease-out forwards;
+}
+
+.shatter-watermelon {
+    animation: watermelon-shatter 0.8s ease-out forwards;
+}
+
+.shatter-snow {
+    animation: snow-shatter 1s ease-out forwards;
+}
+
+@keyframes pomegranate-shatter {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+        filter: hue-rotate(0deg);
+    }
+    30% {
+        transform: scale(1.4) rotate(120deg);
+        opacity: 0.8;
+        filter: hue-rotate(45deg);
+    }
+    100% {
+        transform: scale(0.1) rotate(360deg);
+        opacity: 0;
+        filter: hue-rotate(180deg);
+    }
+}
+
+@keyframes watermelon-shatter {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    20% {
+        transform: scale(1.2) rotate(72deg);
+        opacity: 0.9;
+    }
+    40% {
+        transform: scale(1.5) rotate(144deg);
+        opacity: 0.7;
+    }
+    60% {
+        transform: scale(1.3) rotate(216deg);
+        opacity: 0.5;
+    }
+    80% {
+        transform: scale(1.1) rotate(288deg);
+        opacity: 0.3;
+    }
+    100% {
+        transform: scale(0.05) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes snow-shatter {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.8) rotate(180deg);
+        opacity: 0.6;
+        filter: brightness(1.5) blur(1px);
+    }
+    100% {
+        transform: scale(3) rotate(360deg);
+        opacity: 0;
+        filter: brightness(2) blur(3px);
     }
 }
 
@@ -142,16 +405,21 @@ body {
     height: 100%;
     pointer-events: none;
     z-index: 100;
-    overflow: hidden;
+    /* overflow: hidden; - removed so particles outside container are also displayed */
 }
 
 .seed-particle {
-    position: absolute;
+    position: fixed;
     width: 8px;
     height: 8px;
     border-radius: 50%;
     pointer-events: none;
     animation: seedBurst 1.2s ease-out forwards;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 10000;
 }
 
 .seed-watermelon {
@@ -214,32 +482,40 @@ body {
    7. GLASS MORPHISM CARD WITH ANIMATED BORDER
    ============================================ */
 .glass-card {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 24px;
     padding: 40px 30px;
     max-width: 500px;
     width: 100%;
-    box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     animation: fadeInUp 1s ease-out;
     position: relative;
     overflow: hidden;
+    pointer-events: none; /* modal doesn't capture clicks */
+    z-index: 10;
+}
+
+/* modal children should be clickable */
+.glass-card * {
+    pointer-events: auto;
 }
 
 /* Animated border with rounded corners */
 .glass-card::before {
     content: '';
     position: absolute;
-    top: -3px;
-    left: -3px;
-    right: -3px;
-    bottom: -3px;
-    background: linear-gradient(90deg, #dc2626, #16a34a, #dc2626, #16a34a);
-    border-radius: 24px;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(90deg, var(--primary-color, rgba(255,255,255,0.3)), var(--secondary-color, rgba(255,255,255,0.1)), var(--primary-color, rgba(255,255,255,0.3)), var(--secondary-color, rgba(255,255,255,0.1)));
+    border-radius: 26px;
     z-index: -1;
     animation: rotateBorder 4s linear infinite;
     background-size: 200% 200%;
@@ -495,6 +771,7 @@ body {
 
 .telegram-input[type=number] {
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 /* Inline Paste Button */
@@ -802,9 +1079,9 @@ body {
     }
 }
 
-/* ========== بخش‌های جدید برای بازی (v0.2) ========== */
+/* ========== New sections for game (v0.2) ========== */
 
-/* صفحه بازی */
+/* Game page */
 .game-screen {
     display: none;
     width: 100%;
@@ -847,7 +1124,7 @@ body {
     overflow: hidden;
 }
 
-/* میوه‌های بازی */
+/* Game fruits */
 .fruit {
     position: absolute;
     cursor: pointer;
@@ -870,7 +1147,7 @@ body {
     100% { transform: scale(2) rotate(360deg); opacity: 0; }
 }
 
-/* ذرات */
+/* Particles */
 .particle-container {
     position: fixed;
     top: 0;
@@ -895,7 +1172,7 @@ body {
     }
 }
 
-/* مودال‌ها */
+/* Modals */
 .modal {
     display: none;
     position: fixed;
@@ -967,7 +1244,7 @@ body {
     box-shadow: 0 8px 25px rgba(0,0,0,0.4);
 }
 
-/* مودال هدیه */
+/* Gift Modal */
 .gift-modal {
     max-width: 600px;
 }
@@ -1011,7 +1288,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* لودینگ */
+/* Loading */
 .loading {
     position: fixed;
     top: 0;

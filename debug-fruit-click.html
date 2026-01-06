@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Debug Fruit Click</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: 'Vazir', sans-serif;
+            background: linear-gradient(135deg, #0b1020 0%, #1a1a2e 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .debug-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .fruit {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            pointer-events: auto !important;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            animation: fall linear infinite;
+            opacity: 0.9;
+            font-size: 50px;
+            text-align: center;
+            line-height: 60px;
+            z-index: 1000;
+            user-select: none;
+        }
+
+        .fruit:hover {
+            transform: scale(1.15);
+        }
+
+        @keyframes fall {
+            from { top: -100px; }
+            to { top: 100vh; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Debug Fruit Click</h1>
+    <p>میوه‌ها را کلیک کنید و console را چک کنید</p>
+
+    <div class="debug-info" id="debug-info">
+        Debug Info:<br>
+        - Mouse events: listening<br>
+        - Container: checking<br>
+        - Particles: ready<br>
+    </div>
+
+    <div id="fruits-container"></div>
+    <div id="seeds-container"></div>
+
+    <script>
+        const debugInfo = document.getElementById('debug-info');
+        let fruitCount = 0;
+
+        function addDebug(msg) {
+            debugInfo.innerHTML += '<br>- ' + msg;
+        }
+
+        // Test fruit creation
+        addDebug('Creating test fruit...');
+        createTestFruit();
+
+        function createTestFruit() {
+            const container = document.getElementById('fruits-container');
+            addDebug('Container found: ' + (container ? 'YES' : 'NO'));
+
+            const fruitEl = document.createElement('div');
+            fruitEl.className = 'fruit';
+            fruitEl.textContent = '🍎';
+            fruitEl.style.left = '200px';
+            fruitEl.style.top = '200px';
+
+            fruitEl.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                addDebug('FRUIT CLICKED!');
+
+                // Stop animation
+                fruitEl.style.animation = 'none';
+
+                // Add shatter
+                fruitEl.classList.add('shatter-pomegranate');
+                addDebug('Shatter class added');
+
+                // Create particles
+                createTestParticles(200 + 30, 200 + 30, 'pomegranate');
+
+                // Remove fruit
+                setTimeout(() => {
+                    if (fruitEl.parentNode) {
+                        fruitEl.remove();
+                        addDebug('Fruit removed');
+                    }
+                }, 800);
+            });
+
+            container.appendChild(fruitEl);
+            addDebug('Fruit added to container');
+        }
+
+        function createTestParticles(x, y, fruitType) {
+            const container = document.getElementById('seeds-container') || document.body;
+            addDebug('Creating particles in: ' + (container.id || 'body'));
+
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'seed-particle demo-particle seed-' + fruitType;
+                particle.textContent = fruitType === 'pomegranate' ? '•' : '●';
+
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+
+                const angle = (Math.PI * 2 * i) / 8;
+                const distance = 80;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+
+                container.appendChild(particle);
+                addDebug('Particle ' + i + ' added');
+
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.remove();
+                    }
+                }, 1500);
+            }
+        }
+
+        // Check console
+        console.log('Debug page loaded');
+        console.log('Fruits container:', document.getElementById('fruits-container'));
+        console.log('Seeds container:', document.getElementById('seeds-container'));
+    </script>
+</body>
+</html>

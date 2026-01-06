@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎪 Fruit Click Test</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: 'Vazir', sans-serif;
+            background: linear-gradient(135deg, #0b1020 0%, #1a1a2e 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: white;
+        }
+        .test-info {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .fruit {
+            position: absolute;
+            font-size: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            animation: fall 5s linear infinite;
+        }
+        .fruit:hover {
+            transform: scale(1.15);
+        }
+        @keyframes fall {
+            from { top: -100px; }
+            to { top: 100vh; }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-info">
+        <h2>🧪 Fruit Click Test</h2>
+        <p>میوه‌هایی که از بالا می‌ریزند را کلیک کنید تا ذرات پخش شوند!</p>
+        <p>✅ میوه‌ها باید قابل کلیک باشند</p>
+        <p>✅ کلیک باید انیمیشن پخش ذرات ایجاد کند</p>
+        <p>✅ میوه باید نابود شود</p>
+    </div>
+
+    <div id="fruits-container"></div>
+
+    <div id="seeds-container"></div>
+
+    <script>
+        // Simple fruit click test
+        let gameStarted = false;
+        let gameActive = false;
+
+        const FRUIT_TYPES = {
+            pomegranate: { emoji: '🍎', color: '#c62828', particle: '🔴' },
+            watermelon: { emoji: '🍉', color: '#2e7d32', particle: '🟢' }
+        };
+
+        const CONFIG = {
+            fruitSize: 60,
+            maxInitialFruits: 5,
+            initialInterval: 3000
+        };
+
+        // Start fruit rain
+        startInitialFruitRain();
+
+        function startInitialFruitRain() {
+            const container = document.getElementById('fruits-container');
+
+            setInterval(() => {
+                if (container.querySelectorAll('.fruit').length < CONFIG.maxInitialFruits) {
+                    spawnFruit(container);
+                }
+            }, CONFIG.initialInterval);
+        }
+
+        function spawnFruit(container) {
+            const fruitType = Math.random() > 0.5 ? 'pomegranate' : 'watermelon';
+            const fruit = FRUIT_TYPES[fruitType];
+
+            const fruitEl = document.createElement('div');
+            fruitEl.className = 'fruit';
+            fruitEl.textContent = fruit.emoji;
+            fruitEl.style.position = 'absolute';
+            fruitEl.style.left = Math.random() * (window.innerWidth - CONFIG.fruitSize) + 'px';
+            fruitEl.style.top = '-100px';
+            fruitEl.style.fontSize = CONFIG.fruitSize + 'px';
+            fruitEl.style.zIndex = '10';
+            fruitEl.style.userSelect = 'none';
+            fruitEl.dataset.type = fruitType;
+
+            const fallDuration = Math.random() * 3000 + 4000;
+            fruitEl.style.animation = `fall ${fallDuration}ms linear`;
+
+            // Make clickable
+            fruitEl.style.cursor = 'pointer';
+            fruitEl.addEventListener('click', () => handleDemoFruitClick(fruitEl, fruitType));
+
+            container.appendChild(fruitEl);
+
+            setTimeout(() => {
+                if (fruitEl.parentNode) fruitEl.remove();
+            }, fallDuration);
+        }
+
+        function handleDemoFruitClick(fruitEl, fruitType) {
+            console.log('Demo fruit clicked:', fruitType);
+
+            // Stop animation
+            fruitEl.style.animation = 'none';
+
+            // Add shatter effect
+            fruitEl.classList.add(`shatter-${fruitType}`);
+
+            // Create particles
+            createDemoParticles(fruitEl.offsetLeft + fruitEl.offsetWidth/2, fruitEl.offsetTop + fruitEl.offsetHeight/2, fruitType);
+
+            // Remove fruit
+            setTimeout(() => {
+                if (fruitEl.parentNode) {
+                    fruitEl.remove();
+                }
+            }, 800);
+
+            // Screen shake
+            document.body.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(() => {
+                document.body.style.animation = '';
+            }, 500);
+        }
+
+        function createDemoParticles(x, y, fruitType) {
+            const container = document.getElementById('seeds-container') || document.body;
+            const particleCount = fruitType === 'snow' ? 12 : 8;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'seed-particle demo-particle';
+
+                switch(fruitType) {
+                    case 'pomegranate':
+                        particle.classList.add('seed-pomegranate');
+                        particle.textContent = '•';
+                        break;
+                    case 'watermelon':
+                        particle.classList.add('seed-watermelon');
+                        particle.textContent = '●';
+                        break;
+                    default:
+                        particle.classList.add('seed-pomegranate');
+                        particle.textContent = '•';
+                }
+
+                particle.style.position = 'absolute';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.zIndex = '1000';
+                particle.style.pointerEvents = 'none';
+
+                const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.5;
+                const distance = 80 + Math.random() * 40;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+
+                container.appendChild(particle);
+
+                setTimeout(() => {
+                    if (particle.parentNode) particle.remove();
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
