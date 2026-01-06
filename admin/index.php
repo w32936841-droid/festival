@@ -114,6 +114,16 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
+    <!-- SVG Gradient Definitions for Circular Progress -->
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <linearGradient id="circular-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
     <!-- Animated Background -->
     <div class="animated-bg">
         <div class="floating-particles">
@@ -593,41 +603,60 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
         function renderDashboard(data) {
             const container = document.getElementById('stats-container');
 
+            // Calculate circular progress values (283 is the circumference of the circle)
+            const cpuOffset = 283 - (283 * (data.server_stats.cpu || 0) / 100);
+            const ramOffset = 283 - (283 * (data.server_stats.ram || 0) / 100);
+            const diskOffset = 283 - (283 * (data.server_stats.disk || 0) / 100);
+
             container.innerHTML = `
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value">${data.participants || 0}</div>
-                        <div class="stat-label">Participants</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${data.prizes_won || 0}</div>
-                        <div class="stat-label">Prizes Won</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${data.server_stats.cpu}%</div>
-                        <div class="stat-label">Server CPU</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${data.server_stats.cpu}%"></div>
+                <!-- Server Metrics Section -->
+                <div class="server-metrics">
+                    <div class="metric-card">
+                        <div class="metric-title">CPU Usage</div>
+                        <div class="circular-progress">
+                            <svg>
+                                <circle class="bg-circle" cx="60" cy="60" r="45"></circle>
+                                <circle class="progress-circle" cx="60" cy="60" r="45" style="stroke-dashoffset: ${cpuOffset}"></circle>
+                            </svg>
+                            <div class="metric-value">${data.server_stats.cpu || 0}%</div>
                         </div>
+                        <div class="metric-label">Processor Load</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${data.server_stats.ram}%</div>
-                        <div class="stat-label">Server RAM</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${data.server_stats.ram}%"></div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">Memory Usage</div>
+                        <div class="circular-progress">
+                            <svg>
+                                <circle class="bg-circle" cx="60" cy="60" r="45"></circle>
+                                <circle class="progress-circle" cx="60" cy="60" r="45" style="stroke-dashoffset: ${ramOffset}"></circle>
+                            </svg>
+                            <div class="metric-value">${data.server_stats.ram || 0}%</div>
                         </div>
+                        <div class="metric-label">RAM Consumption</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">Disk Usage</div>
+                        <div class="circular-progress">
+                            <svg>
+                                <circle class="bg-circle" cx="60" cy="60" r="45"></circle>
+                                <circle class="progress-circle" cx="60" cy="60" r="45" style="stroke-dashoffset: ${diskOffset}"></circle>
+                            </svg>
+                            <div class="metric-value">${data.server_stats.disk || 0}%</div>
+                        </div>
+                        <div class="metric-label">Storage Used</div>
                     </div>
                 </div>
 
-                <div class="server-stats">
-                    <div class="server-stat">
-                        <strong>CPU</strong><br>${data.server_stats.cpu}%
+                <!-- User Statistics Section -->
+                <div class="user-stats">
+                    <div class="stat-card">
+                        <div class="stat-value">${data.participants || 0}</div>
+                        <div class="stat-label">Total Participants</div>
                     </div>
-                    <div class="server-stat">
-                        <strong>RAM</strong><br>${data.server_stats.ram}%
-                    </div>
-                    <div class="server-stat">
-                        <strong>Disk</strong><br>${data.server_stats.disk}%
+                    <div class="stat-card">
+                        <div class="stat-value">${data.prizes_won || 0}</div>
+                        <div class="stat-label">Prizes Awarded</div>
                     </div>
                 </div>
             `;
@@ -652,8 +681,22 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 document.getElementById('recent-activity').style.display = 'block';
             }
 
-            // Animate stat cards
-            gsap.fromTo('.stat-card',
+            // Animate metric cards
+            gsap.fromTo('.metric-card',
+                { opacity: 0, scale: 0.8, y: 30 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    duration: 0.8,
+                    stagger: 0.15,
+                    ease: 'back.out(1.7)',
+                    delay: 0.1
+                }
+            );
+
+            // Animate user stat cards
+            gsap.fromTo('.user-stats .stat-card',
                 { opacity: 0, scale: 0.8, y: 20 },
                 {
                     opacity: 1,
@@ -662,18 +705,18 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                     duration: 0.6,
                     stagger: 0.1,
                     ease: 'back.out(1.7)',
-                    delay: 0.2
+                    delay: 0.4
                 }
             );
 
-            // Animate progress bars
-            gsap.fromTo('.progress-fill',
-                { width: 0 },
+            // Animate circular progress
+            gsap.fromTo('.progress-circle',
+                { strokeDashoffset: 283 },
                 {
-                    width: 'var(--target-width)',
-                    duration: 1,
+                    strokeDashoffset: 'var(--target-offset)',
+                    duration: 1.5,
                     ease: 'power2.out',
-                    delay: 0.5
+                    delay: 0.6
                 }
             );
         }
