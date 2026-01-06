@@ -766,11 +766,11 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             }
 
             const themeList = themes.map(theme => `
-                <div class="theme-item" style="margin: 20px 0; padding: 15px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="theme-item">
+                    <div>
                         <div>
-                            <h4 style="margin: 0 0 10px;">${theme.name} ${theme.active ? '(Active)' : ''}</h4>
-                            <p style="margin: 5px 0; color: #cbd5e1;">${theme.guide_text}</p>
+                            <h4>${theme.name} ${theme.active ? '(Active)' : ''}</h4>
+                            <p>${theme.guide_text}</p>
                             <small>Objects: ${JSON.parse(theme.falling_objects || '[]').join(', ')}</small>
                         </div>
                         <div>
