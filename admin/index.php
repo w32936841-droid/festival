@@ -250,46 +250,73 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                         <i class="fas fa-tags"></i>
                     </div>
                     <h2 class="card-title">Discount Management</h2>
+                    <button class="add-discount-btn" id="add-discount-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Add New Type</span>
+                    </button>
                 </div>
 
-                <form id="discount-form" class="glass-form">
-                    <div class="form-group">
-                        <label class="form-label">Discount Percentage</label>
-                        <input type="number" name="percent" min="1" max="90" class="form-input" required placeholder="e.g., 50">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Probability Weight (higher = better chance)</label>
-                        <input type="number" name="weight" min="0" step="0.1" class="form-input" required placeholder="e.g., 10.0">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Code Prefix</label>
-                        <input type="text" name="prefix" class="form-input" required placeholder="e.g., YALDA, FESTIVAL">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Expiry Hours</label>
-                        <select name="expiry_hours" class="form-select" required>
-                            <option value="12">12 hours</option>
-                            <option value="24">24 hours</option>
-                            <option value="48">48 hours</option>
-                            <option value="72">72 hours</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Target Product</label>
-                        <input type="text" name="target_product" class="form-input" value="30GB 30-day" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        <span>Add Discount Type</span>
-                    </button>
-                </form>
+                <!-- Create Form (Hidden by default) -->
+                <div id="discount-form-container" class="form-container" style="display: none;">
+                    <form id="discount-form" class="glass-form">
+                        <div class="form-header">
+                            <h3>Create New Discount Type</h3>
+                            <button type="button" class="close-form-btn" id="close-discount-form">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Discount Percentage</label>
+                                <input type="number" name="percent" min="1" max="90" class="form-input" required placeholder="e.g., 50">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Probability Weight</label>
+                                <input type="number" name="weight" min="0" step="0.1" class="form-input" required placeholder="e.g., 10.0">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Code Prefix</label>
+                                <input type="text" name="prefix" class="form-input" required placeholder="e.g., YALDA, FESTIVAL">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Expiry Hours</label>
+                                <select name="expiry_hours" class="form-select" required>
+                                    <option value="12">12 hours</option>
+                                    <option value="24">24 hours</option>
+                                    <option value="48">48 hours</option>
+                                    <option value="72">72 hours</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Target Product</label>
+                                <input type="text" name="target_product" class="form-input" value="30GB 30-day" required>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                <span>Create Discount Type</span>
+                            </button>
+                            <button type="button" class="btn btn-ghost" id="cancel-discount-form">
+                                <span>Cancel</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
+                <!-- Status Messages -->
                 <div id="discount-status"></div>
 
-                <div id="discounts-list">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <p>Loading discounts...</p>
+                <!-- Discounts List -->
+                <div class="discounts-list-container">
+                    <div class="list-header">
+                        <h3>Existing Discount Types</h3>
+                    </div>
+                    <div id="discounts-list">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            <p class="loading-text">Loading discount types...</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -512,6 +539,45 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                     }
                 }
             });
+
+            // Discount form toggle
+            const addDiscountBtn = document.getElementById('add-discount-btn');
+            const discountFormContainer = document.getElementById('discount-form-container');
+            const closeDiscountForm = document.getElementById('close-discount-form');
+            const cancelDiscountForm = document.getElementById('cancel-discount-form');
+
+            if (addDiscountBtn) {
+                addDiscountBtn.addEventListener('click', function() {
+                    gsap.fromTo(discountFormContainer,
+                        { opacity: 0, height: 0, marginBottom: 0 },
+                        { opacity: 1, height: 'auto', marginBottom: '2rem', duration: 0.5, ease: 'power2.out' }
+                    );
+                    discountFormContainer.style.display = 'block';
+                    addDiscountBtn.style.display = 'none';
+                });
+            }
+
+            if (closeDiscountForm) {
+                closeDiscountForm.addEventListener('click', hideDiscountForm);
+            }
+
+            if (cancelDiscountForm) {
+                cancelDiscountForm.addEventListener('click', hideDiscountForm);
+            }
+
+            function hideDiscountForm() {
+                gsap.to(discountFormContainer, {
+                    opacity: 0,
+                    height: 0,
+                    marginBottom: 0,
+                    duration: 0.3,
+                    ease: 'power2.in',
+                    onComplete: () => {
+                        discountFormContainer.style.display = 'none';
+                        addDiscountBtn.style.display = 'flex';
+                    }
+                });
+            }
 
             setupNavigation();
             setupTimeFilters();
