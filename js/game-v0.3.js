@@ -1,4 +1,4 @@
-// version: 0.3.3 - Internationalization support added
+// version: 0.4.0 - English only, simplified i18n system
 // ========== Global Variables ==========
 
 let userId = '';

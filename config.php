@@ -6,7 +6,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/languages/i18n.php';
 
 // Versioning
-define('FEST_VERSION', 'v1.0.2');
+define('FEST_VERSION', 'v0.2');
 
 // Database Configuration
 define('DB_HOST', 'localhost');

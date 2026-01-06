@@ -1,4 +1,47 @@
-# Festival Reward System - v1.0.2 (Enhanced Release)
+# Festival Reward System - v0.2 (English Only Release)
+
+## 🎉 Release v0.2 - English Only & Internationalization Ready
+
+### 🌍 Major Changes
+- **Complete Persian language removal**: All Persian text, comments, and UI elements removed
+- **English-only interface**: Clean, single-language experience
+- **Simplified i18n system**: Ready for easy language additions by developers
+- **Code cleanup**: Removed unnecessary files and multilingual complexity
+
+### 🔧 Technical Improvements
+- Removed all `data-lang` attributes and Persian spans from HTML
+- Simplified JavaScript without Persian strings
+- Updated CSS comments to English
+- Streamlined admin panel to English only
+- Cleaned up language files directory
+
+### 🎯 Key Features in v0.2
+- **Monolingual English interface** for cleaner user experience
+- **Developer-friendly i18n system** with 337+ translation keys
+- **Easy language addition** - just create new language files
+- **Production-ready codebase** without multilingual overhead
+
+### 📦 What Was Removed
+- All Persian text and translations
+- Language toggle functionality
+- Persian font imports (Vazirmatn)
+- Complex multilingual JavaScript
+- Persian documentation files
+
+### 🚀 For Developers Adding Languages
+```php
+// Create languages/de.php with 337 translation keys
+// Add 'de' to AVAILABLE_LANGUAGES in i18n.php
+// Done! Language added in minutes
+```
+
+### 🔄 Migration Notes
+- Previous multilingual features removed
+- All UI now displays in English only
+- i18n system ready for future language additions
+- Database and API unchanged
+
+---
 
 ## 🎉 Major Release v1.0.1 - Complete Festival System
 - ✅ Full admin panel with 4 sections: Dashboard, Discount Management, Themes, Users

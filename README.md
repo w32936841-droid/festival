@@ -1,10 +1,17 @@
-# 🎪 Festival Reward System v1.0.2
+# 🎪 Festival Reward System v0.2
 
-A complete interactive festival reward system with admin panel, featuring weighted probability lottery, Telegram bot integration, and beautiful animations.
+A complete interactive festival reward system with admin panel, featuring weighted probability lottery, Telegram bot integration, and beautiful animations. Now in English only with developer-friendly internationalization.
 
 ## 📋 Changelog
 
-### v1.0.2 - Enhanced Release (Current)
+### v0.2 - English Only & Internationalization Ready (Current)
+- 🌍 **Complete Persian Removal**: All Persian text, comments, and UI elements removed
+- 🇺🇸 **English-Only Interface**: Clean, single-language user experience
+- 🔧 **Simplified i18n System**: Developer-friendly internationalization with 337+ translation keys
+- 🧹 **Code Cleanup**: Removed multilingual complexity and unnecessary files
+- 🚀 **Production Ready**: Streamlined codebase for easier maintenance and deployment
+
+### v1.0.2 - Enhanced Release
 - ✨ **Complete CRUD Operations**: Full edit functionality for discounts and themes in admin panel
 - 🎨 **Dynamic Theme System**: Real-time theme loading with custom falling objects and explosion effects
 - 🌐 **Language Toggle**: Persian/English switching with RTL/LTR support
@@ -28,8 +35,9 @@ A complete interactive festival reward system with admin panel, featuring weight
 - **Interactive Falling Objects Game**: Click on falling fruits/pomegranates/watermelons to win prizes
 - **Real-time Validation**: Telegram User ID validation via bot API
 - **Enhanced Animations**: Beautiful explosion effects with particle systems
-- **Bilingual Interface**: Persian and English support
+- **English-Only Interface**: Clean, professional single-language experience
 - **Mobile Responsive**: Works perfectly on all devices
+- **Developer-Friendly i18n**: Easy to add new languages with 337+ translation keys
 
 ### 🎯 Lottery System
 - **Weighted Probabilities**: Configure different win chances for each prize type
@@ -175,6 +183,21 @@ No Prize: 20.0
 Try Again: 10.0
 ```
 
+### Internationalization (i18n)
+Add new languages easily:
+```php
+// 1. Create languages/de.php with 337 translation keys
+// 2. Add 'de' to AVAILABLE_LANGUAGES in languages/i18n.php
+// 3. Access: index.html?lang=de
+
+// Example language file structure:
+return [
+    'hello_world' => 'Hallo Welt',
+    'welcome' => 'Willkommen',
+    // ... 335+ more keys
+];
+```
+
 ## 🔒 Security Features
 
 - **Server-side Lottery**: Prevents frontend manipulation
@@ -230,10 +253,24 @@ define('DEBUG_MODE', true);
 
 ## 🤝 Contributing
 
+### Code Contributions
 1. Fork the repository
 2. Create feature branch
 3. Test thoroughly
 4. Submit pull request
+
+### Adding New Languages
+1. Copy `languages/en.php` to `languages/{code}.php`
+2. Translate all 337+ keys accurately
+3. Add language code to `AVAILABLE_LANGUAGES` in `languages/i18n.php`
+4. Test with `?lang={code}` parameter
+5. Submit pull request with translation
+
+### Translation Quality
+- Use proper cultural context
+- Maintain technical terminology accuracy
+- Test UI layout with new translations
+- Ensure RTL support for right-to-left languages
 
 ## 📄 License
 
