@@ -41,6 +41,10 @@ try {
             getDashboardStats($pdo);
             break;
 
+        case 'hourly_stats':
+            getHourlyStats($pdo);
+            break;
+
         case 'get_discounts':
             getDiscountTypes($pdo);
             break;
@@ -368,6 +372,109 @@ function getUserDetails($pdo) {
         'user' => $user,
         'activity' => $activity
     ], JSON_UNESCAPED_UNICODE);
+}
+
+function getHourlyStats($pdo) {
+    $type = $_GET['type'] ?? 'participants';
+    $range = $_GET['range'] ?? '24h';
+
+    // Calculate date range
+    $now = new DateTime();
+    switch ($range) {
+        case '1h':
+            $startDate = $now->modify('-1 hour');
+            $groupBy = 'MINUTE';
+            $interval = 5; // 5-minute intervals
+            break;
+        case '6h':
+            $startDate = $now->modify('-6 hours');
+            $groupBy = 'MINUTE';
+            $interval = 30; // 30-minute intervals
+            break;
+        case '12h':
+            $startDate = $now->modify('-12 hours');
+            $groupBy = 'HOUR';
+            $interval = 1; // 1-hour intervals
+            break;
+        case '24h':
+            $startDate = $now->modify('-24 hours');
+            $groupBy = 'HOUR';
+            $interval = 2; // 2-hour intervals
+            break;
+        case '7d':
+            $startDate = $now->modify('-7 days');
+            $groupBy = 'DATE';
+            $interval = 1; // daily
+            break;
+        case '30d':
+            $startDate = $now->modify('-30 days');
+            $groupBy = 'DATE';
+            $interval = 1; // daily
+            break;
+        default:
+            $startDate = $now->modify('-24 hours');
+            $groupBy = 'HOUR';
+            $interval = 2;
+    }
+
+    $startDateStr = $startDate->format('Y-m-d H:i:s');
+
+    if ($type === 'participants') {
+        // Get unique participants per time interval
+        if ($groupBy === 'DATE') {
+            $query = "
+                SELECT
+                    DATE(timestamp) as date,
+                    COUNT(DISTINCT user_id) as value
+                FROM logs
+                WHERE timestamp >= ? AND action = 'participated'
+                GROUP BY DATE(timestamp)
+                ORDER BY DATE(timestamp)
+            ";
+        } else {
+            $query = "
+                SELECT
+                    DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i') as hour,
+                    COUNT(DISTINCT user_id) as value
+                FROM logs
+                WHERE timestamp >= ? AND action = 'participated'
+                GROUP BY DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i')
+                ORDER BY timestamp
+            ";
+        }
+    } else if ($type === 'prizes') {
+        // Get prizes awarded per time interval
+        if ($groupBy === 'DATE') {
+            $query = "
+                SELECT
+                    DATE(timestamp) as date,
+                    COUNT(*) as value
+                FROM logs
+                WHERE timestamp >= ? AND action = 'won_prize'
+                GROUP BY DATE(timestamp)
+                ORDER BY DATE(timestamp)
+            ";
+        } else {
+            $query = "
+                SELECT
+                    DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i') as hour,
+                    COUNT(*) as value
+                FROM logs
+                WHERE timestamp >= ? AND action = 'won_prize'
+                GROUP BY DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i')
+                ORDER BY timestamp
+            ";
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Invalid type'], JSON_UNESCAPED_UNICODE);
+        return;
+    }
+
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([$startDateStr]);
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode(['success' => true, 'data' => $data], JSON_UNESCAPED_UNICODE);
 }
 
 function getTranslations() {

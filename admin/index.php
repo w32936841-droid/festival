@@ -112,6 +112,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../css/admin-panel.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- SVG Gradient Definitions for Circular Progress -->
@@ -478,6 +479,40 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 });
             }
 
+            // Click handlers for stat cards
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.clickable-stat')) {
+                    const statCard = e.target.closest('.clickable-stat');
+                    const statType = statCard.getAttribute('data-stat');
+                    showChart(statType);
+                }
+            });
+
+            // Close chart button
+            const closeChartBtn = document.getElementById('close-chart-btn');
+            if (closeChartBtn) {
+                closeChartBtn.addEventListener('click', hideChart);
+            }
+
+            // Chart time filters
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.chart-section .time-btn')) {
+                    const timeBtn = e.target.closest('.time-btn');
+                    const range = timeBtn.getAttribute('data-range');
+
+                    // Update active state
+                    document.querySelectorAll('.chart-section .time-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    timeBtn.classList.add('active');
+
+                    // Reload chart with new range
+                    if (currentChartType) {
+                        loadChartData(currentChartType);
+                    }
+                }
+            });
+
             setupNavigation();
             setupTimeFilters();
             loadDashboard();
@@ -590,6 +625,175 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                     }
                 });
             }
+        }
+
+        // Chart management
+        let currentChart = null;
+        let currentChartType = null;
+
+        function showChart(statType) {
+            currentChartType = statType;
+            const chartSection = document.getElementById('chart-section');
+            const chartTitle = document.getElementById('chart-title');
+
+            // Update title
+            chartTitle.textContent = statType === 'participants' ? 'Hourly Participants' : 'Hourly Prizes Awarded';
+
+            // Show chart section with animation
+            chartSection.style.display = 'block';
+            gsap.fromTo(chartSection,
+                { opacity: 0, y: 20, scale: 0.95 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'power2.out' }
+            );
+
+            // Load chart data
+            loadChartData(statType);
+        }
+
+        function hideChart() {
+            const chartSection = document.getElementById('chart-section');
+            gsap.to(chartSection, {
+                opacity: 0,
+                y: -20,
+                scale: 0.95,
+                duration: 0.3,
+                ease: 'power2.in',
+                onComplete: () => {
+                    chartSection.style.display = 'none';
+                    if (currentChart) {
+                        currentChart.destroy();
+                        currentChart = null;
+                    }
+                }
+            });
+        }
+
+        async function loadChartData(statType) {
+            try {
+                const response = await apiFetch(`../api/admin-api.php?action=hourly_stats&type=${statType}&range=${currentTimeRange}`);
+                if (!response.ok) return;
+
+                const data = await response.json();
+                if (data.success) {
+                    renderChart(data.data, statType);
+                }
+            } catch (error) {
+                console.log('Chart data load failed:', error);
+            }
+        }
+
+        function renderChart(chartData, statType) {
+            const ctx = document.getElementById('statsChart').getContext('2d');
+
+            // Destroy existing chart
+            if (currentChart) {
+                currentChart.destroy();
+            }
+
+            // Prepare data
+            const labels = chartData.map(item => {
+                if (currentTimeRange.includes('h')) {
+                    return item.hour + ':00';
+                } else {
+                    return item.date;
+                }
+            });
+
+            const values = chartData.map(item => item.value);
+
+            // Chart configuration
+            const config = {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: statType === 'participants' ? 'Participants' : 'Prizes Awarded',
+                        data: values,
+                        borderColor: '#008080',
+                        backgroundColor: 'rgba(0, 128, 128, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#00d4aa',
+                        pointBorderColor: '#008080',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        pointHoverBackgroundColor: '#00d4aa',
+                        pointHoverBorderColor: '#008080'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 128, 128, 0.9)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            borderColor: '#00d4aa',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: false,
+                            callbacks: {
+                                title: function(context) {
+                                    return `Time: ${context[0].label}`;
+                                },
+                                label: function(context) {
+                                    const label = statType === 'participants' ? 'Participants' : 'Prizes';
+                                    return `${label}: ${context.parsed.y}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(0, 128, 128, 0.1)',
+                                borderColor: 'rgba(0, 128, 128, 0.2)'
+                            },
+                            ticks: {
+                                color: 'rgba(0, 212, 170, 0.8)',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 128, 128, 0.1)',
+                                borderColor: 'rgba(0, 128, 128, 0.2)'
+                            },
+                            ticks: {
+                                color: 'rgba(0, 212, 170, 0.8)',
+                                font: {
+                                    size: 12
+                                },
+                                precision: 0
+                            }
+                        }
+                    },
+                    elements: {
+                        point: {
+                            hoverRadius: 8
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            };
+
+            currentChart = new Chart(ctx, config);
         }
 
         // Navigation
@@ -774,13 +978,53 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
                 <!-- User Statistics Section -->
                 <div class="user-stats">
-                    <div class="stat-card">
+                    <div class="stat-card clickable-stat" data-stat="participants">
                         <div class="stat-value">${data.participants || 0}</div>
                         <div class="stat-label">Total Participants</div>
+                        <div class="stat-click-hint">Click to view hourly chart</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card clickable-stat" data-stat="prizes">
                         <div class="stat-value">${data.prizes_won || 0}</div>
                         <div class="stat-label">Prizes Awarded</div>
+                        <div class="stat-click-hint">Click to view hourly chart</div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="chart-section glass-card" id="chart-section" style="display: none;">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h2 class="card-title" id="chart-title">Hourly Statistics</h2>
+                        <button class="close-chart-btn" id="close-chart-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="time-filters">
+                        <button class="time-btn active" data-range="1h">
+                            <i class="fas fa-clock"></i> 1 hour
+                        </button>
+                        <button class="time-btn" data-range="6h">
+                            <i class="fas fa-clock"></i> 6 hours
+                        </button>
+                        <button class="time-btn" data-range="12h">
+                            <i class="fas fa-clock"></i> 12 hours
+                        </button>
+                        <button class="time-btn" data-range="24h">
+                            <i class="fas fa-clock"></i> 24 hours
+                        </button>
+                        <button class="time-btn" data-range="7d">
+                            <i class="fas fa-calendar-week"></i> 7 days
+                        </button>
+                        <button class="time-btn" data-range="30d">
+                            <i class="fas fa-calendar-alt"></i> 30 days
+                        </button>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="statsChart" width="400" height="200"></canvas>
                     </div>
                 </div>
             `;
