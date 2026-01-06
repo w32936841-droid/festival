@@ -1,6 +1,6 @@
 <?php
 // Debug API calls for Festival System
-require_once 'config.php';
+require_once '../config.php';
 
 header('Content-Type: text/html; charset=utf-8');
 ?>
@@ -53,7 +53,7 @@ header('Content-Type: text/html; charset=utf-8');
             document.getElementById('db-result').innerHTML = '<pre>در حال بارگذاری...</pre>';
 
             // Simple test
-            fetch('status.php', {
+            fetch('../utils/status.php', {
                 method: 'GET',
                 headers: {
                     'Accept': 'text/html'

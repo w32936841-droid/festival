@@ -30,7 +30,7 @@ fetch('/api/validate.php', {
 - CORS issues
 
 #### Solutions:
-1. Open `check-session.php`
+1. Open `utils/check-session.php`
 2. Login with username `admin` and password `festival2024`
 3. If login successful, test admin panel
 

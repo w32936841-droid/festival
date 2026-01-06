@@ -1,6 +1,6 @@
 <?php
 // Final comprehensive test for Festival System
-require_once 'config.php';
+require_once '../config.php';
 
 echo "<h1>🎪 Final System Test</h1>";
 echo "<style>body{font-family:Arial;margin:20px;} .test{background:#f0f0f0;padding:10px;margin:10px;border-radius:5px;}</style>";

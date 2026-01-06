@@ -62,13 +62,13 @@ A complete interactive festival reward system with admin panel, featuring weight
 ### 1. Check System Status
 First, check if everything is set up correctly:
 ```
-https://yourdomain.com/status.php
+https://yourdomain.com/utils/status.php
 ```
 
 ### 2. Database Setup
 Run the table creation script:
 ```
-https://yourdomain.com/table.php
+https://yourdomain.com/utils/table.php
 ```
 
 ### 3. Configuration
@@ -84,12 +84,12 @@ define('BOT_API_TOKEN', 'your_actual_bot_token_here');
 ```
 
 ### 4. Change Admin Password
-Read `ADMIN_PASSWORD_CHANGE.md` and change the default admin credentials.
+Read `docs/ADMIN_PASSWORD_CHANGE.md` and change the default admin credentials.
 
 ### 5. Access Points
 - **User Interface**: `index.html`
 - **Admin Panel**: `admin/index.php`
-- **System Status**: `status.php`
+- **System Status**: `utils/status.php`
 - **API Endpoints**: `api/` directory
 
 ### 📖 For detailed deployment instructions, see `DEPLOYMENT_GUIDE.md`
@@ -235,7 +235,7 @@ return [
 
 **Admin panel not loading:**
 - Check database connection
-- Verify table creation with table.php
+- Verify table creation with utils/table.php
 - Check file permissions
 
 ### Debug Mode
