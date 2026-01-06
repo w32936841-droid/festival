@@ -279,18 +279,36 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                                 <input type="text" name="prefix" class="form-input" required placeholder="e.g., YALDA, FESTIVAL">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Expiry Hours</label>
-                                <div class="expiry-input-group">
-                                    <select name="expiry_preset" class="form-select expiry-preset" id="expiry-preset">
-                                        <option value="">Custom hours...</option>
-                                        <option value="12">12 hours</option>
-                                        <option value="24">24 hours</option>
-                                        <option value="48">48 hours</option>
-                                        <option value="72">72 hours</option>
-                                        <option value="168">1 week</option>
-                                        <option value="720">1 month</option>
-                                    </select>
-                                    <input type="number" name="expiry_hours" class="form-input expiry-custom" id="expiry-custom" min="1" max="8760" placeholder="Enter hours" required>
+                                <label class="form-label">Expiry Time</label>
+                                <div class="expiry-selector">
+                                    <div class="quick-options">
+                                        <button type="button" class="option-pill active" data-hours="12">
+                                            <i class="fas fa-clock"></i>
+                                            <span>12h</span>
+                                        </button>
+                                        <button type="button" class="option-pill" data-hours="24">
+                                            <i class="fas fa-clock"></i>
+                                            <span>24h</span>
+                                        </button>
+                                        <button type="button" class="option-pill" data-hours="72">
+                                            <i class="fas fa-calendar-day"></i>
+                                            <span>3 Days</span>
+                                        </button>
+                                        <button type="button" class="option-pill" data-hours="168">
+                                            <i class="fas fa-calendar-week"></i>
+                                            <span>1 Week</span>
+                                        </button>
+                                        <button type="button" class="option-pill custom-toggle" id="custom-toggle">
+                                            <i class="fas fa-cog"></i>
+                                            <span>Custom</span>
+                                        </button>
+                                    </div>
+                                    <div class="custom-input-container" id="custom-input-container" style="display: none;">
+                                        <div class="custom-input-wrapper">
+                                            <input type="number" name="expiry_hours" class="custom-hours-input" id="custom-hours-input" min="1" max="8760" placeholder="Enter hours (1-8760)">
+                                            <span class="input-suffix">hours</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group full-width">
@@ -414,8 +432,48 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 </div>
 
                 <div class="glass-modal-body">
-                    <form id="edit-form" class="glass-form">
-                        <!-- Dynamic content will be inserted here -->
+                    <form id="edit-form" class="edit-discount-form">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label class="input-label">Discount Percentage</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="percent" min="1" max="90" class="modern-input" required>
+                                    <span class="input-icon">%</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Probability Weight</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="weight" min="0" step="0.1" class="modern-input" required>
+                                    <span class="input-icon">⚖️</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Code Prefix</label>
+                                <div class="input-wrapper">
+                                    <input type="text" name="prefix" class="modern-input" required>
+                                    <span class="input-icon">🏷️</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Expiry Hours</label>
+                                <div class="input-wrapper">
+                                    <input type="number" name="expiry_hours" min="1" max="8760" class="modern-input" required>
+                                    <span class="input-icon">⏰</span>
+                                </div>
+                            </div>
+
+                            <div class="input-group full-width">
+                                <label class="input-label">Target Product</label>
+                                <div class="input-wrapper">
+                                    <input type="text" name="target_product" class="modern-input" required>
+                                    <span class="input-icon">📦</span>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
@@ -607,28 +665,87 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 });
             }
 
-            // Expiry hours input management
-            const expiryPreset = document.getElementById('expiry-preset');
-            const expiryCustom = document.getElementById('expiry-custom');
+            // Modern Expiry Time Selector
+            const optionPills = document.querySelectorAll('.option-pill');
+            const customToggle = document.getElementById('custom-toggle');
+            const customInputContainer = document.getElementById('custom-input-container');
+            const customHoursInput = document.getElementById('custom-hours-input');
+            let selectedExpiryHours = 12; // Default to 12 hours
 
-            if (expiryPreset && expiryCustom) {
-                expiryPreset.addEventListener('change', function() {
-                    if (this.value === '') {
-                        expiryCustom.style.display = 'block';
-                        expiryCustom.required = true;
-                        expiryCustom.focus();
-                        gsap.fromTo(expiryCustom, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.3 });
-                    } else {
-                        expiryCustom.style.display = 'none';
-                        expiryCustom.required = false;
-                        expiryCustom.value = this.value;
+            // Set initial value
+            document.querySelector('input[name="expiry_hours"]').value = selectedExpiryHours;
+
+            function updateExpirySelection(hours, element) {
+                selectedExpiryHours = hours;
+
+                // Update active state
+                optionPills.forEach(pill => pill.classList.remove('active'));
+                if (element) {
+                    element.classList.add('active');
+                }
+
+                // Hide custom input if not custom
+                if (hours !== 'custom') {
+                    gsap.to(customInputContainer, {
+                        opacity: 0,
+                        height: 0,
+                        duration: 0.3,
+                        ease: 'power2.in',
+                        onComplete: () => {
+                            customInputContainer.style.display = 'none';
+                        }
+                    });
+                    document.querySelector('input[name="expiry_hours"]').value = hours;
+                }
+            }
+
+            // Handle pill clicks
+            optionPills.forEach(pill => {
+                if (!pill.classList.contains('custom-toggle')) {
+                    pill.addEventListener('click', function() {
+                        const hours = parseInt(this.getAttribute('data-hours'));
+                        updateExpirySelection(hours, this);
+                    });
+                }
+            });
+
+            // Handle custom toggle
+            if (customToggle) {
+                customToggle.addEventListener('click', function() {
+                    updateExpirySelection('custom', this);
+
+                    customInputContainer.style.display = 'block';
+                    gsap.fromTo(customInputContainer, {
+                        opacity: 0,
+                        height: 0,
+                        scale: 0.9
+                    }, {
+                        opacity: 1,
+                        height: 'auto',
+                        scale: 1,
+                        duration: 0.4,
+                        ease: 'back.out(1.7)'
+                    });
+
+                    if (customHoursInput) {
+                        setTimeout(() => customHoursInput.focus(), 300);
                     }
                 });
-
-                // Initialize - hide custom input by default
-                expiryCustom.style.display = 'none';
-                expiryCustom.required = false;
             }
+
+            // Handle custom input changes
+            if (customHoursInput) {
+                customHoursInput.addEventListener('input', function() {
+                    const value = parseInt(this.value) || 0;
+                    if (value > 0 && value <= 8760) {
+                        selectedExpiryHours = value;
+                        document.querySelector('input[name="expiry_hours"]').value = value;
+                    }
+                });
+            }
+
+            // Initialize with first option active
+            updateExpirySelection(12, document.querySelector('.option-pill[data-hours="12"]'));
 
             setupNavigation();
             setupTimeFilters();

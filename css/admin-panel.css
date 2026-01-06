@@ -1234,21 +1234,187 @@ body {
     grid-column: 1 / -1;
 }
 
-/* Expiry Hours Input Group */
-.expiry-input-group {
+/* Modern Expiry Time Selector */
+.expiry-selector {
+    background: var(--glass-bg-secondary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-xl);
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.quick-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.option-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--glass-bg-tertiary);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.option-pill::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #008080, #00d4aa);
+    opacity: 0;
+    transition: var(--transition-fast);
+}
+
+.option-pill:hover::before,
+.option-pill.active::before {
+    opacity: 0.1;
+}
+
+.option-pill:hover,
+.option-pill.active {
+    color: var(--text-primary);
+    border-color: #008080;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 128, 128, 0.2);
+}
+
+.option-pill i {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+.custom-toggle {
+    background: linear-gradient(135deg, #008080, #00d4aa);
+    color: white;
+    border-color: #008080;
+}
+
+.custom-toggle:hover,
+.custom-toggle.active {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 128, 128, 0.4);
+}
+
+.custom-input-container {
+    overflow: hidden;
+}
+
+.custom-input-wrapper {
     position: relative;
     display: flex;
+    align-items: center;
+}
+
+.custom-hours-input {
+    flex: 1;
+    padding: 0.875rem 3rem 0.875rem 1rem;
+    background: var(--glass-bg-tertiary);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    transition: var(--transition-fast);
+}
+
+.custom-hours-input:focus {
+    outline: none;
+    border-color: #008080;
+    box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.1);
+}
+
+.input-suffix {
+    position: absolute;
+    right: 1rem;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 500;
+    pointer-events: none;
+}
+
+/* Edit Discount Form Styling */
+.edit-discount-form {
+    margin: 0;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
-    align-items: stretch;
+    margin-bottom: 1.5rem;
 }
 
-.expiry-preset {
-    flex: 1;
+.input-group.full-width {
+    grid-column: 1 / -1;
 }
 
-.expiry-custom {
+.input-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.modern-input {
     flex: 1;
-    display: none;
+    padding: 1rem 3rem 1rem 1rem;
+    background: rgba(0, 128, 128, 0.08);
+    border: 1px solid rgba(0, 128, 128, 0.2);
+    border-radius: var(--border-radius-lg);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    transition: var(--transition-fast);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.modern-input:focus {
+    outline: none;
+    border-color: #00d4aa;
+    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+    background: rgba(0, 128, 128, 0.12);
+}
+
+.modern-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+.input-icon {
+    position: absolute;
+    right: 1rem;
+    color: var(--text-muted);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: var(--transition-fast);
+}
+
+.modern-input:focus + .input-icon {
+    color: #00d4aa;
+    transform: scale(1.1);
 }
 
 /* Modern Select Styling */
@@ -1546,6 +1712,36 @@ body {
 
     .glass-modal-title {
         font-size: 1.25rem;
+    }
+
+    .quick-options {
+        justify-content: center;
+    }
+
+    .option-pill {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.8rem;
+    }
+
+    .option-pill i {
+        font-size: 0.7rem;
+    }
+
+    .custom-hours-input {
+        padding: 0.75rem 2.5rem 0.75rem 0.875rem;
+    }
+
+    .input-icon {
+        font-size: 0.875rem;
+    }
+
+    .modern-input {
+        padding: 0.875rem 2.5rem 0.875rem 0.875rem;
+        font-size: 0.8rem;
+    }
+
+    .input-label {
+        font-size: 0.8rem;
     }
 
     .time-filters {
