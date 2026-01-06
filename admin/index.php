@@ -400,6 +400,9 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             });
         }
 
+        // Global variables for real-time updates
+        let realtimeInterval = null;
+
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Admin panel initializing...');
@@ -479,7 +482,115 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             setupTimeFilters();
             loadDashboard();
             setupForms();
+
+            // Start real-time updates for dashboard
+            startRealtimeUpdates();
         });
+
+        // Real-time dashboard updates
+        function startRealtimeUpdates() {
+            // Update every 30 seconds
+            realtimeInterval = setInterval(() => {
+                if (currentSection === 'dashboard') {
+                    updateDashboardRealtime();
+                }
+            }, 30000);
+        }
+
+        function stopRealtimeUpdates() {
+            if (realtimeInterval) {
+                clearInterval(realtimeInterval);
+                realtimeInterval = null;
+            }
+        }
+
+        // Real-time dashboard update (only stats, not activity)
+        async function updateDashboardRealtime() {
+            try {
+                const response = await apiFetch(`../api/admin-api.php?action=dashboard_stats&range=${currentTimeRange}`);
+                if (!response.ok) return;
+
+                const data = await response.json();
+                if (data.success) {
+                    updateServerMetrics(data.data.server_stats);
+                    updateUserStats(data.data.participants, data.data.prizes_won);
+                }
+            } catch (error) {
+                console.log('Real-time update failed:', error);
+            }
+        }
+
+        function updateServerMetrics(serverStats) {
+            const cpuPercent = serverStats.cpu || 0;
+            const ramPercent = serverStats.ram || 0;
+            const diskPercent = serverStats.disk || 0;
+
+            // Update CPU
+            const cpuCircle = document.querySelector('.cpu-circle');
+            const cpuValue = document.querySelector('.cpu-value');
+            if (cpuCircle && cpuValue) {
+                const cpuOffset = 283 - (283 * cpuPercent / 100);
+                gsap.to(cpuCircle, {
+                    strokeDashoffset: cpuOffset,
+                    duration: 1,
+                    ease: 'power2.out'
+                });
+                cpuValue.textContent = cpuPercent + '%';
+            }
+
+            // Update RAM
+            const ramCircle = document.querySelector('.ram-circle');
+            const ramValue = document.querySelector('.ram-value');
+            if (ramCircle && ramValue) {
+                const ramOffset = 283 - (283 * ramPercent / 100);
+                gsap.to(ramCircle, {
+                    strokeDashoffset: ramOffset,
+                    duration: 1,
+                    ease: 'power2.out'
+                });
+                ramValue.textContent = ramPercent + '%';
+            }
+
+            // Update Disk
+            const diskCircle = document.querySelector('.disk-circle');
+            const diskValue = document.querySelector('.disk-value');
+            if (diskCircle && diskValue) {
+                const diskOffset = 283 - (283 * diskPercent / 100);
+                gsap.to(diskCircle, {
+                    strokeDashoffset: diskOffset,
+                    duration: 1,
+                    ease: 'power2.out'
+                });
+                diskValue.textContent = diskPercent + '%';
+            }
+        }
+
+        function updateUserStats(participants, prizesWon) {
+            const participantCards = document.querySelectorAll('.user-stats .stat-card .stat-value');
+            if (participantCards.length >= 1) {
+                // Animate participant count
+                gsap.to({ val: parseInt(participantCards[0].textContent) || 0 }, {
+                    val: participants || 0,
+                    duration: 1,
+                    ease: 'power2.out',
+                    onUpdate: function() {
+                        participantCards[0].textContent = Math.floor(this.val);
+                    }
+                });
+            }
+
+            if (participantCards.length >= 2) {
+                // Animate prizes won count
+                gsap.to({ val: parseInt(participantCards[1].textContent) || 0 }, {
+                    val: prizesWon || 0,
+                    duration: 1,
+                    ease: 'power2.out',
+                    onUpdate: function() {
+                        participantCards[1].textContent = Math.floor(this.val);
+                    }
+                });
+            }
+        }
 
         // Navigation
         function setupNavigation() {
@@ -506,6 +617,11 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
         }
 
         function switchSection(sectionName) {
+            // Stop real-time updates when leaving dashboard
+            if (currentSection === 'dashboard' && sectionName !== 'dashboard') {
+                stopRealtimeUpdates();
+            }
+
             // Hide all sections
             document.querySelectorAll('.glass-card').forEach(card => {
                 card.style.display = 'none';
@@ -549,6 +665,10 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             switch(sectionName) {
                 case 'dashboard':
                     loadDashboard();
+                    // Restart real-time updates when returning to dashboard
+                    if (!realtimeInterval) {
+                        startRealtimeUpdates();
+                    }
                     break;
                 case 'discounts':
                     loadDiscounts();
@@ -604,9 +724,13 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             const container = document.getElementById('stats-container');
 
             // Calculate circular progress values (283 is the circumference of the circle)
-            const cpuOffset = 283 - (283 * (data.server_stats.cpu || 0) / 100);
-            const ramOffset = 283 - (283 * (data.server_stats.ram || 0) / 100);
-            const diskOffset = 283 - (283 * (data.server_stats.disk || 0) / 100);
+            const cpuPercent = data.server_stats.cpu || 0;
+            const ramPercent = data.server_stats.ram || 0;
+            const diskPercent = data.server_stats.disk || 0;
+
+            const cpuOffset = 283 - (283 * cpuPercent / 100);
+            const ramOffset = 283 - (283 * ramPercent / 100);
+            const diskOffset = 283 - (283 * diskPercent / 100);
 
             container.innerHTML = `
                 <!-- Server Metrics Section -->
@@ -616,9 +740,9 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                         <div class="circular-progress">
                             <svg>
                                 <circle class="bg-circle" cx="60" cy="60" r="45"></circle>
-                                <circle class="progress-circle" cx="60" cy="60" r="45" style="stroke-dashoffset: ${cpuOffset}"></circle>
+                                <circle class="progress-circle cpu-circle" cx="60" cy="60" r="45" data-percent="${cpuPercent}"></circle>
                             </svg>
-                            <div class="metric-value">${data.server_stats.cpu || 0}%</div>
+                            <div class="metric-value cpu-value">${cpuPercent}%</div>
                         </div>
                         <div class="metric-label">Processor Load</div>
                     </div>
@@ -628,9 +752,9 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                         <div class="circular-progress">
                             <svg>
                                 <circle class="bg-circle" cx="60" cy="60" r="45"></circle>
-                                <circle class="progress-circle" cx="60" cy="60" r="45" style="stroke-dashoffset: ${ramOffset}"></circle>
+                                <circle class="progress-circle ram-circle" cx="60" cy="60" r="45" data-percent="${ramPercent}"></circle>
                             </svg>
-                            <div class="metric-value">${data.server_stats.ram || 0}%</div>
+                            <div class="metric-value ram-value">${ramPercent}%</div>
                         </div>
                         <div class="metric-label">RAM Consumption</div>
                     </div>
@@ -640,9 +764,9 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                         <div class="circular-progress">
                             <svg>
                                 <circle class="bg-circle" cx="60" cy="60" r="45"></circle>
-                                <circle class="progress-circle" cx="60" cy="60" r="45" style="stroke-dashoffset: ${diskOffset}"></circle>
+                                <circle class="progress-circle disk-circle" cx="60" cy="60" r="45" data-percent="${diskPercent}"></circle>
                             </svg>
-                            <div class="metric-value">${data.server_stats.disk || 0}%</div>
+                            <div class="metric-value disk-value">${diskPercent}%</div>
                         </div>
                         <div class="metric-label">Storage Used</div>
                     </div>
@@ -710,15 +834,20 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             );
 
             // Animate circular progress
-            gsap.fromTo('.progress-circle',
-                { strokeDashoffset: 283 },
-                {
-                    strokeDashoffset: 'var(--target-offset)',
-                    duration: 1.5,
-                    ease: 'power2.out',
-                    delay: 0.6
-                }
-            );
+            document.querySelectorAll('.progress-circle').forEach((circle, index) => {
+                const percent = parseInt(circle.getAttribute('data-percent'));
+                const targetOffset = 283 - (283 * percent / 100);
+
+                gsap.fromTo(circle,
+                    { strokeDashoffset: 283 },
+                    {
+                        strokeDashoffset: targetOffset,
+                        duration: 1.5,
+                        ease: 'power2.out',
+                        delay: 0.6 + (index * 0.2)
+                    }
+                );
+            });
         }
 
         // Discounts
